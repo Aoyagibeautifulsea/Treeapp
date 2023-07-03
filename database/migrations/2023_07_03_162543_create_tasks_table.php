@@ -13,16 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->dateTime('released_date');
-            $table->boolean('age_limit');
-            $table->boolean('ai_generate_check');
+            $table->string('task', 100);
+            $table->integer('status');
             $table->foreignId('user_id')->constrained('users');
-            $table->Timestamps( );
+            $table->timestamps();
             $table->softDeletes();
-            
         });
     }
 
@@ -33,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('tasks');
     }
 };

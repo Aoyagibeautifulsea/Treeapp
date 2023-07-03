@@ -15,14 +15,7 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->dateTime('released_date');
-            $table->boolean('age_limit');
-            $table->boolean('ai_generate_check');
-            $table->foreignId('user_id')->constrained('users');
-            $table->Timestamps( );
-            $table->softDeletes();
-            
+            $table->timestamps();
         });
     }
 
