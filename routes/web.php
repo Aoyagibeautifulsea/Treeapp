@@ -15,9 +15,9 @@ use App\Http\Controllers\PostController;
 |
 */
 Route::get('/posts', [PostController::class, 'index']);
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('/',  [PostController::class, 'toppage']);
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
