@@ -14,13 +14,25 @@ use App\Http\Controllers\PostController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/posts', [PostController::class, 'index']);
 
-Route::get('/',  [PostController::class, 'toppage']);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/',  [PostController::class, 'toppage'])->name('toppage');
+
+
+Route::get('/', [PostController::class, 'toppage'])->name('toppage');
+
+Route::get('posts/serch_index', [PostController::class, 'serch_index'])->name('serch_index');
+Route::get('/posts/{post}', [PostController::class ,'show']);
+
+
+Route::get('posts/create', function () {
+    return view('create');
+})->middleware(['auth', 'verified'])->name('create');
+
+Route::get('posts/mypage', function () {
+    return view('mypage');
+})->middleware(['auth', 'verified'])->name('mypage');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
