@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class Source_StoryController extends Controller
+class Wish_listController extends Controller
 {
     //
 }
