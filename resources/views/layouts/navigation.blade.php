@@ -19,6 +19,9 @@
                      <x-nav-link :href="route('create')" :active="request()->routeIs('create')">
                         {{ __('Create') }}
                      </x-nav-link>
+                     <x-nav-link :href="route('wish_list')" :active="request()->routeIs('wish_list')">
+                        {{ __('Wish_list') }}
+                     </x-nav-link>
                      <x-nav-link :href="route('mypage')" :active="request()->routeIs('mypage')">
                         {{ __('Mypage') }}
                     </x-nav-link>

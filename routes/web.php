@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\CreatorController;
+use App\Http\Controllers\ToppageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,19 +17,18 @@ use App\Http\Controllers\PostController;
 |
 */
 
+// <--toppage-->
+Route::get('/',  [ToppageController::class, 'toppage'])->name('toppage');
 
-Route::get('/',  [PostController::class, 'toppage'])->name('toppage');
 
+// <--serch_index-->
+Route::get('posts/serch_index', [SerchIndexController::class, 'serch_index'])->name('serch_index');
 
-Route::get('/', [PostController::class, 'toppage'])->name('toppage');
-
-Route::get('posts/serch_index', [PostController::class, 'serch_index'])->name('serch_index');
+// <--show-->
 Route::get('/posts/{post}', [PostController::class ,'show']);
 
 
-Route::get('posts/create', function () {
-    return view('create');
-})->middleware(['auth', 'verified'])->name('create');
+
 
 Route::get('posts/mypage', function () {
     return view('mypage');
@@ -35,6 +36,15 @@ Route::get('posts/mypage', function () {
 
 
 Route::middleware('auth')->group(function () {
+    // <--create-->
+    Route::get('/posts/create', [CreateController::class, 'create'])->name('create');
+    // <search_source_story>
+    
+    // <search_inspired_by_story>
+    
+    //< wish_list>
+    Route::get('/reads/wish_list', [WishListController::class, 'wish_list'])->name('wish_list');
+    // <--profire-->
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
