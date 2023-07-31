@@ -9,8 +9,10 @@ class link extends Model
 {
     use HasFactory;
     
-    public function posts()   
+    protected $fillable = ['external_link', 'external_link_explanation'];
+    
+    public function post()   
 {
-    return $this->hasMany(Post::class);  
+    return $this->belongsTo(Post::class);  
 }
 }

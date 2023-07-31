@@ -5,12 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class creator extends Model
+class comment extends Model
 {
     use HasFactory;
     
-    public function posts()   
+    protected $fillable = ['body'];
+    
+    public function post()   
 {
-    return $this->hasMany(Post::class);  
+    return $this->belongsTo(Post::class);  
 }
 }

@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('tag_user', function (Blueprint $table) {
             $table->foreignId('tag_id')->constrained('tags');
             $table->foreignId('user_id')->constrained('users');
+            $table->primary(['tag_id', 'user_id']); 
         });
     }
 

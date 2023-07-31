@@ -9,27 +9,40 @@ class Post extends Model
 {
     use HasFactory;
     
+    protected $fillable = ['title', 'released_date', 'age_limit', 'ai_generate_check'];
+    
     // <--toppage関連-->
     public function gettoppage(int $limit_count = 20)
 {
     return $this::with('category')->orderBy('updated_at', 'DESC')->paginate($limit_count);
 }
 //  <--リレーション-->
-    public function creator()
+    public function user()
 {
-    return $this->belongsTo(Creator::class);
+    return $this->belongsTo(User::class);
 }
-    public function comment()
+    public function creators()
 {
-    return $this->belongsTo(Comment::class);
+    return $this->hasMany(Creator::class);
 }
-    public function image()
+    public function comments()
 {
-    return $this->belongsTo(Image::class);
+    return $this->hasMany(Comment::class);
 }
-    public function link()
+    public function images()
 {
-    return $this->belongsTo(Link::class);
+    return $this->hasMany(Image::class);
 }
-
+    public function links()
+{
+    return $this->hasMany(Link::class);
+}
+    public function tags()
+{
+        return $this->belongsToMany(Tag::class, 'post_tag', 'post_id', 'tag_id');
+}
+    public function favoritedBy()
+    {
+        return $this->belongsToMany(User::class, 'favorites', 'post_id', 'user_id')->withTimestamps();
+    }
 }
