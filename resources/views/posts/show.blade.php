@@ -35,8 +35,25 @@
      
 </div>
 <div class='tag'>
-    
+     <ul>
+        @foreach ($post->tags as $tag)
+            <li>{{ $tag->name }}</li>
+        @endforeach
+    </ul>
+
+    <h2>タグの追加</h2>
+    <form method="post" action="{{ route('post.updateTags', $post->id) }}">
+        @csrf
+        @foreach ($tags as $tag)
+            <label>
+                <input type="checkbox" name="tags[]" value="{{ $tag->id }}" {{ $post->tags->contains($tag->id) ? 'checked' : '' }}>
+                {{ $tag->name }}
+            </label><br>
+        @endforeach
+        <button type="submit">更新</button>
+    </form>
 </div>
+
 <div class='link'>
      {{ $post->link->external_link}}
      {{ $post->link->external_link_explanation}}
@@ -50,9 +67,24 @@
 </div>
 <div class='wish_list'>
     <!--読みたいリストへの追加ボタン-->
+     <form action="{{ route('wish_list.add', $post->id) }}" method="POST">
+            @csrf
+            <button type="submit">wish_listに追加</button>
+        </form>
 </div>
+
 <div class='good'>
     <!--いいねボタン-->
+     <form action="{{ route('posts.like', ['id' => $post->id]) }}" method="POST">
+        @csrf
+        <button type="submit">
+            @if ($post->favoritedBy()->where('user_id', auth()->id())->exists())
+                いいねを解除
+            @else
+                いいね
+            @endif
+        </button>
+    </form>
 </div>
 
 <div class='inspired_by_story'>

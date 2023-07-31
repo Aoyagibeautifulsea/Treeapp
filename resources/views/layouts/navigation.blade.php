@@ -11,22 +11,19 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('toppage')" :active="request()->routeIs('toppage')">
-                        {{ __('Toppage') }}
+                        {{ __('トップページ') }}
                         </x-nav-link>
-                     <x-nav-link :href="route('serch_index')" :active="request()->routeIs('serch_index')">
-                        {{ __('Serch_index') }}
-                     </x-nav-link>
                      <x-nav-link :href="route('create')" :active="request()->routeIs('create')">
-                        {{ __('Create') }}
+                        {{ __('作品を追加') }}
                      </x-nav-link>
-                     <x-nav-link :href="route('wish_list')" :active="request()->routeIs('wish_list')">
-                        {{ __('Wish_list') }}
+                     <x-nav-link :href="route('wish_list.view')" :active="request()->routeIs('wish_list.view')">
+                        {{ __('読みたいリスト') }}
                      </x-nav-link>
-                     <x-nav-link :href="route('mypage')" :active="request()->routeIs('mypage')">
-                        {{ __('Mypage') }}
+                     <x-nav-link :href="route('showmypage')" :active="request()->routeIs('showmypage')">
+                        {{ __('マイページ') }}
                     </x-nav-link>
                     <x-nav-link :href="route('login')" :active="request()->routeIs('login')">
-                        {{ __('Login') }}
+                        {{ __('ログイン') }}
                       </x-nav-link>
                      
                 </div>
@@ -51,7 +48,7 @@
 
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
+                            {{ __('プロフィール') }}
                         </x-dropdown-link>
 
                         <!-- Authentication -->
@@ -61,7 +58,7 @@
                             <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                {{ __('Log Out') }}
+                                {{ __('ログアウト') }}
                             </x-dropdown-link>
                         </form>
                     </x-slot>

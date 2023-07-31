@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('links', function (Blueprint $table) {
             $table->foreignId('post_id')->constrained('posts');
-            $table->string('external_link');
-            $table->string('external_link_explanation', 200);
+            $table->string('external_link')->nullable();
+            $table->string('external_link_explanation', 200)->nullable();
         });
     }
 
