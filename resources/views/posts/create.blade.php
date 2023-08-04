@@ -21,8 +21,8 @@
 　　　　　　
 　　　　　　<div class='comment'>
 　　　　　　    <h4>作品解説</h4>
-　　　　　　    <input type="text" name="post[comment][body]" placeholder="作品に関するっコメントを入力してください" value="{{ old('post.comment.body') }}"/>
-　　　　　　      <p class="title__error" style="color:red">{{ $errors->first('post.comment.body') }}</p>
+　　　　　　    <input type="text" name="post[explanation]" placeholder="作品に関するっコメントを入力してください" value="{{ old('post.comment.body') }}"/>
+　　　　　　      <p class="title__error" style="color:red">{{ $errors->first('post.explanation') }}</p>
 　　　　　　</div>
 　　　　　　
 　　　　　　<div class='link'>
@@ -38,9 +38,16 @@
 　　　　　　</div>
 　　　　　　
 　　　　　　 <div class='tag'>
-　　　　        <h7>タグ</h7>
-　　　　　       <input type="text" name="tag[name]" placeholder="タグを入力してください">
-　　　　　         <p class="title__error" style="color:red">{{ $errors->first('tag.name') }}</p>
+　　　　        <h7>タグの選択</h7>
+　　　　　         @foreach ($tags->groupBy('category') as $category => $groupedTags)
+                 <h2>{{ $category }}</h2>
+                 @foreach ($groupedTags as $tag)
+                 <label>
+                 <input type="checkbox" name="tags_array[]" value="{{ $tag->id }}" />
+                 {{ $tag->name }}
+                </label>
+                @endforeach
+                @endforeach
 　　　　　  </div>
 　　　　　  
 　　　　　　<div class='image'>
@@ -51,12 +58,12 @@
 　　　　　　
 　　　　　　<div class='age_limit'>
 　　　　　　    <h9>成人向け作品の場合はチェックを入れてください</h9>
-　　　　　　    <input type="checkbox" name="post[age_limit]" value="{{ old('post.age_limit') }}"/>
+　　　　　　    <input type="checkbox" name="post[age_limit]" value="true" @if(old('post.age_limit')) checked @endif />
 　　　　　　</div>
 　　　　　　
 　　　　　　<div class='ai_generate_check'>
 　　　　　　    <h10>AI生成の作品の場合はチェックを入れてください</h10>
-　　　　　　    <input type="checkbox" name="post[ai_generate_check]" value="{{ old('post.ai_generate_check') }}"/ >
+　　　　　　    <input type="checkbox" name="post[ai_generate_check]" value="true" @if(old('post.ai_generate_check')) checked @endif />
 　　　　　　</div>
 　　　　　　
 　　　　　　<input type="submit" value="store"/>

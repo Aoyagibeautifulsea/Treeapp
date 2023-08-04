@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
+use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Creator;
 use App\Models\Tag;
@@ -21,26 +22,23 @@ class PostController extends Controller
         $tags = Tag::all();
     return view('posts.show', compact('post', 'tags'));
     }
-
-    public function updateTags(Request $request, Post $post)
-    {
-        $post->tags()->sync($request->input('tags')); 
-
-    return redirect()->route('post.show', $post->id)->with('success', 'タグが更新されました。');
-    }
     // <--投稿制作create-->
      public function create()
     {
-    return view('posts.create');
+        $tags = Tag::all();
+    return view('posts.create', compact('tags'));
     }
-     public function store(PostRequest $request, Post $post, Tag $tag )
+     public function store(PostRequest $request, Post $post, )
     {
         dd($request);
      $post->user_id = Auth::id();
      $post_input = $request['post'];
-     $tag_input = $request['tag'];
      $post->fill($post_input)->save();
-     $tag->fill($tag_input)->save();
+     
+     $gettag = $request->input('tags_array', []);
+    // タグを関連付ける
+     $post->tags()->sync($gettag);
+    
     return redirect('/posts/' . $post->id);
     }
     
@@ -79,12 +77,12 @@ class PostController extends Controller
         $user = auth()->user();
 
         // 既にいいねしているか確認
-        if ($post->users()->where('user_id', $user->id)->exists()) {
+        if ($post->favoritedBy()->where('user_id', $user->id)->exists()) {
             // いいねを解除
-            $post->users()->detach($user->id);
+            $post->favoritedBy()->detach($user->id);
         } else {
             // いいねを付ける
-            $post->users()->attach($user->id);
+            $post->favoritedBy()->attach($user->id);
         }
 
         return redirect()->back();
@@ -100,8 +98,7 @@ class PostController extends Controller
 {
     return view('posts.search_source_story')->with(['posts' => $post->getsourcestory()]);
 }
-// 　　$posts = $post->getsourcestory();
-// return view('posts.search_source_story', compact('posts'));
+// 　
 
 //   <--子作品inspiredbystory-->
       public function showinspiredbystory(Post $post)

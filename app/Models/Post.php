@@ -9,7 +9,7 @@ class Post extends Model
 {
     use HasFactory;
     
-    protected $fillable = ['title', 'released_date', 'age_limit', 'ai_generate_check'];
+    protected $fillable = ['title', 'released_date', 'age_limit', 'ai_generate_check','explanation'];
     
     // <--toppage関連-->
     public function gettoppage(int $limit_count = 20)
