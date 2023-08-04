@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
     // <--create-->
     Route::get('/posts/create', [PostController::class, 'create'])->name('create');
     Route::post('/create_post', [PostController::class, 'store'])->name('create_post');
+//   <--いいね-->
     Route::post('/posts/{id}/like', [PostController::class, 'like'])->name('posts.like');
     // <search_source_story>
     Route::get('/posts/search_source_story', [PostController::class, 'showsourcestory'])->name('showsourcestory');

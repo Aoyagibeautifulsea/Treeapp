@@ -3,13 +3,14 @@
 <div class='source_story'>
      <!--<--ここはどのようなことをする場所かの説明をする-->-->
      
-      @if ($posts->count() > 0)
+      @if ($post->count() > 0)
     <!--// $posts の要素数が 0 より大きい場合に実行するコード-->
+    
      @else
        <p>親作品はまだ追加されていません。</p>
      @endif
      
-     <a href="{{ route('search_source_story') }}">作品を探す</a>
+     <a href="{{ route('showsourcestory') }}">作品を探す</a>
      <!--認証されたユーザーのみ-->
      
 </div>
@@ -27,40 +28,32 @@
 </div>
 
 <div class='creator'>
-     {{ $post->creator->name}}
+     @foreach($post->creators as $creator)
+    {{ $creator->name }}
+     @endforeach
      
 </div>
-<div class='comment'>
-     {{ $post->comment->body}}
+<div class='explanation'>
+     {{ $post->explanation}}
      
 </div>
 <div class='tag'>
-     <ul>
         @foreach ($post->tags as $tag)
-            <li>{{ $tag->name }}</li>
+            {{ $tag->name }}
         @endforeach
-    </ul>
-
-    <h2>タグの追加</h2>
-    <form method="post" action="{{ route('post.updateTags', $post->id) }}">
-        @csrf
-        @foreach ($tags as $tag)
-            <label>
-                <input type="checkbox" name="tags[]" value="{{ $tag->id }}" {{ $post->tags->contains($tag->id) ? 'checked' : '' }}>
-                {{ $tag->name }}
-            </label><br>
-        @endforeach
-        <button type="submit">更新</button>
-    </form>
 </div>
 
 <div class='link'>
-     {{ $post->link->external_link}}
-     {{ $post->link->external_link_explanation}}
+     @foreach ($post->links as $link)
+     {{ $link->external_link}}
+     {{ $link->external_link_explanation}}
+     @endforeach
      
 </div>
 <div class='image'>
-     {{ $post->image->image_path}}
+     @foreach ($post->images as $images)
+     {{ $image->image_path}}
+     @endforeach
      
 </div>
 
@@ -90,13 +83,13 @@
 <div class='inspired_by_story'>
       <!--<--ここはどのようなことをする場所かの説明をする-->-->
       
-     @if ($posts->count() > 0)
+     @if ($post->count() > 0)
     <!--// $posts の要素数が 0 より大きい場合に実行するコード-->
      @else
        <p>子作品はまだ追加されていません。</p>
      @endif
      
-      <a href="{{ route('search_inspired_by_story') }}">作品を探す</a>
+      <a href="{{ route('showinspiredbystory') }}">作品を探す</a>
       <!--認証されたユーザーのみ-->
       
 </div>      

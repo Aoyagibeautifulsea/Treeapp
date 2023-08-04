@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-
+use App\Models\Post;
 
 class MypageController extends Controller
 {
@@ -16,7 +16,7 @@ class MypageController extends Controller
         // ユーザーの投稿を取得
         $user = User::with('posts')->find($userId);
         // ログインユーザーのいいねした投稿を取得
-        $likedPosts = $user->likedPosts;
+        $likedPosts = $user->favoritePosts;
 
         return view('mypages.mypage', compact('user', 'likedPosts'));
     }

@@ -27,7 +27,7 @@ class PostRequest extends FormRequest
         ['post.title' => 'required|string|max:100',
          'post.released_date' => 'required|regex:/^[0-9]+$/',
          'post.creator.name' => 'required|string|max:100',
-         'post.comment.body' => 'required|string|max:300',
+         'post.explanation' => 'required|string|max:300',
          'post.image.image_path' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
          'post.link.external_link' => 'required|url',
          'post.link.external_link_explanation' => 'required|string|max:150',

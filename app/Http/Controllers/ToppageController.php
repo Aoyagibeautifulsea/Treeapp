@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Creator;
+use App\Models\Tag;
 
 class ToppageController extends Controller
 {
@@ -12,16 +13,49 @@ class ToppageController extends Controller
 public function toppage(Request $request)
     {
         $keyword = $request->input('keyword');
+        $title_Keyword =$request->input('title_keyword');
+        $author_Keyword = $request->input('author_keyword');
+        $startYear = $request->input('start_year');
+        $endYear = $request->input('end_year');
+        $selectedTags = $request->input('tags');
+        $selectedTags = [];
 
         $query = Post::query();
 
-        if(!empty($keyword)) {
-            $query->where('title', 'LIKE', "%{$keyword}%")
-                ->orWhere('author', 'LIKE', "%{$keyword}%");
+       // 作品名での検索
+        if ($request->input('search_type') === 'title') {
+            if (!empty($keyword)) {
+                $query->where('title', 'LIKE', "%{$keyword}%");
+            }
         }
 
-        $posts = $query->get();
+        // 作者名での検索
+        if ($request->input('search_type') === 'author') {
+            if (!empty($author_Keyword)) {
+                $query->whereHas('creator', function ($q) use ($author_Keyword) {
+                    $q->where('name', 'LIKE', "%{$author_Keyword}%");
+                });
+            }
+        }
 
-        return view('posts.toppage', compact('posts', 'keyword'));
+        // 年代での検索
+        if ($request->input('search_type') === 'year') {
+            if (!empty($startYear) && !empty($endYear)) {
+                $query->whereBetween('released_date', [$startYear, $endYear]);
+            }
+        }
+        // タグでの検索
+         if ($request->input('search_type') === 'tag' && !empty($selectedTags)) {
+        // $selectedTagsが空でない場合にのみ検索条件を追加
+        $query->whereHas('tags', function ($q) use ($selectedTags) {
+            $q->whereIn('id', $selectedTags);
+        });
+        }
+        $tags = Tag::all();
+
+        $posts = $query->get();
+       
+
+         return view('posts.toppage', compact('posts', 'keyword', 'title_Keyword', 'author_Keyword', 'startYear', 'endYear','tags', 'selectedTags'));
      }
 }
