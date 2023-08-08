@@ -28,12 +28,37 @@ class PostController extends Controller
         $tags = Tag::all();
     return view('posts.create', compact('tags'));
     }
-     public function store(PostRequest $request, Post $post, )
+     public function store(PostRequest $request, Post $post, Creator $creator,Image $image, Link $link )
     {
-        dd($request);
+        
      $post->user_id = Auth::id();
      $post_input = $request['post'];
+    
+      //  bool型でデータを格納
+     $agecheck = $request->has('post.age_limit') ? true : false;
+     $post_input['age_limit'] = $agecheck;
+     $post_input['age_limit'] = (boolean)
+     $post_input['age_limit'];
+     
+     $aicheck = $request->has('post.ai_generate_check') ? true : false;
+     $post_input['ai_generate_check'] = $aicheck;
+     $post_input['ai_generate_check'] = (boolean)
+     $post_input['ai_generate_check'];
+     
      $post->fill($post_input)->save();
+     
+     $creator->name = $request['name'];
+     $creator->post_id = $post->id;
+     $creator->save();
+     
+     $image->image_path = $request['image_path'];
+     $image->post_id = $post->id;
+     $image->save();
+     
+     $link->external_link = $request['external_link'];
+     $link->external_link_explanation = $request['external_link_explanation'];
+     $link->post_id = $post->id;
+     $link->save();
      
      $gettag = $request->input('tags_array', []);
     // タグを関連付ける

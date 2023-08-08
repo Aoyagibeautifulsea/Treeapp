@@ -52,7 +52,7 @@
 </div>
 <div class='image'>
      @foreach ($post->images as $images)
-     {{ $image->image_path}}
+     {{ $images->image_path}}
      @endforeach
      
 </div>
@@ -60,7 +60,7 @@
 </div>
 <div class='wish_list'>
     <!--読みたいリストへの追加ボタン-->
-     <form action="{{ route('wish_list.add', $post->id) }}" method="POST">
+     <form action="{{ route('Wish_list', $post->id) }}" method="POST">
             @csrf
             <button type="submit">wish_listに追加</button>
         </form>

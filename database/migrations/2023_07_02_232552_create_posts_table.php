@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->year('released_date');
+            $table->string('released_date');
+            $table->string('explanation', 300)->nullable();
             $table->boolean('age_limit')->default(false);
             $table->boolean('ai_generate_check')->default(false);
             $table->foreignId('user_id')->constrained('users');

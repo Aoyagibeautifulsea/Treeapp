@@ -26,11 +26,12 @@ class PostRequest extends FormRequest
         return 
         ['post.title' => 'required|string|max:100',
          'post.released_date' => 'required|regex:/^[0-9]+$/',
-         'post.creator.name' => 'required|string|max:100',
+         'post.released_date' => 'required|regex:/^\d{1,4}$/',
+         'name' => 'required|string|max:100',
          'post.explanation' => 'required|string|max:300',
-         'post.image.image_path' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-         'post.link.external_link' => 'required|url',
-         'post.link.external_link_explanation' => 'required|string|max:150',
+         'image_path' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+         'external_link' => 'required|url',
+         'external_link_explanation' => 'required|string|max:150',
          
             
         ];
