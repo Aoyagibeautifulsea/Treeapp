@@ -10,8 +10,8 @@
             
 　　　　　　<div class='creator'>
 　　　　　　    <h2>作者</h2>
-　　　　　　    <input type="text" name="post[creator][name]" placeholder="作者名を入力してください" value="{{ old('post.creator.name') }}"/>
-　　　　　　      <p class="title__error" style="color:red">{{ $errors->first('post.creator.name') }}</p>
+　　　　　　    <input type="text" name="name" placeholder="作者名を入力してください" value="{{ old('name') }}"/>
+　　　　　　      <p class="title__error" style="color:rd">{{ $errors->first('name') }}</p>
 　　　　　　</div>
 　　　　　　<div clsss='released_date'>
 　　　　　　    <h3>作品が発表された年</h3>
@@ -27,14 +27,14 @@
 　　　　　　
 　　　　　　<div class='link'>
 　　　　　　    <h5>外部リンク</h5>
-　　　　　　    <input type="text" name="post[link][external_link]" placeholder="作品に関するリンクを入力してください（任意）" value="{{ old('post.link.external_link') }}"/>
-　　　　　　      <p class="title__error" style="color:red">{{ $errors->first('post.link.external_link') }}</p>
+　　　　　　    <input type="text" name="external_link" placeholder="作品に関するリンクを入力してください（任意）" value="{{ old('external_link') }}"/>
+　　　　　　      <p class="title__error" style="color:red">{{ $errors->first('external_link') }}</p>
 　　　　　  </div>
 　　　　　   
 　　　　　   <div class='link_explanation'>
 　　　　　　    <h6>リンクの解説</h6>
-　　　　　　     <input type="text" name="post[link][external_link_explanation]" placeholder="リンクの解説を入力してください（任意）" value="{{ old('post.link.external_link_explanation') }}"/>
-　　　　　　       <p class="title__error" style="color:red">{{ $errors->first('post.link.external_link_explanation') }}</p>
+　　　　　　     <input type="text" name="external_link_explanation" placeholder="リンクの解説を入力してください（任意）" value="{{ old('external_link_explanation') }}"/>
+　　　　　　       <p class="title__error" style="color:red">{{ $errors->first('external_link_explanation') }}</p>
 　　　　　　</div>
 　　　　　　
 　　　　　　 <div class='tag'>
@@ -52,18 +52,18 @@
 　　　　　  
 　　　　　　<div class='image'>
 　　　　　　    <h8>作品関連画像</h8>
-　　　　　　    <input type="file" name="post[image][image_path]" value="{{ old('post.image.image_path') }}"/>
-　　　　　　     <p class="image__error" style="color: red;">{{ $errors->first('post.image.image_path') }}</p>
+　　　　　　    <input type="file" name="image_path" value="{{ old('image_path') }}"/>
+　　　　　　     <p class="image__error" style="color: red;">{{ $errors->first('image_path') }}</p>
 　　　　　　</div>
 　　　　　　
 　　　　　　<div class='age_limit'>
 　　　　　　    <h9>成人向け作品の場合はチェックを入れてください</h9>
-　　　　　　    <input type="checkbox" name="post[age_limit]" value="true" @if(old('post.age_limit')) checked @endif />
+　　　　　　    <input type="checkbox" name="post[age_limit]" value=true @if(old('post.age_limit')) checked @endif />
 　　　　　　</div>
 　　　　　　
 　　　　　　<div class='ai_generate_check'>
 　　　　　　    <h10>AI生成の作品の場合はチェックを入れてください</h10>
-　　　　　　    <input type="checkbox" name="post[ai_generate_check]" value="true" @if(old('post.ai_generate_check')) checked @endif />
+　　　　　　    <input type="checkbox" name="post[ai_generate_check]" value=true  @if(old('post.ai_generate_check')) checked @endif />
 　　　　　　</div>
 　　　　　　
 　　　　　　<input type="submit" value="store"/>

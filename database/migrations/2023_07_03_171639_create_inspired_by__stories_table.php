@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('inspired_by__stories', function (Blueprint $table) {
             $table->foreignId('post_id')->constrained('posts');
             $table->unsignedBigInteger('junior_post_id');
+            $table->Timestamps( );
         });
     }
 

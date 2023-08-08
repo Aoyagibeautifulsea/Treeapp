@@ -32,9 +32,8 @@ Route::middleware('auth')->group(function () {
     // <search_inspired_by_story>
     Route::get('/posts/search_inspired_by_story', [PostController::class, 'showinspiredbystory'])->name('showinspiredbystory');
     //< wish_list>
-    Route::post('/add/{postId}', [WishListController::class, 'addToWishList'])->name('wish_list.add');
+    Route::post('/posts/{id}/wish_list', [WishListController::class, 'operateWishList'])->name('Wish_list');
     Route::get('/reads/wish_list', [WishListController::class, 'viewWishList'])->name('wish_list.view');
-    Route::post('/wish_list/complete', [WishListController::class, 'completeWishList'])->name('wish_list.complete');
     // <--mypage-->
     Route::get('mypages/mypage',[MypageController::class, 'showmypage'])->name('showmypage');
     Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
@@ -42,9 +41,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/posts/{post}/confirm', [PostController::class, 'confirm'])->name('posts.confirm');
     Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
     // <--profire-->
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/update-password-form', [MypageController::class, 'updatepassword'])->name('update-password-form');
+    Route::get('/delete-user-form', [MypageController::class, 'deleteuser'])->name('delete-user-form');
+    Route::get('/profile', [MypageController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [MypageController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [MypageController::class, 'destroy'])->name('profile.destroy');
 });
    // <--show-->
 Route::get('/posts/{post}', [PostController::class ,'show']);

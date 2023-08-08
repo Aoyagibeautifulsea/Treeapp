@@ -45,4 +45,8 @@ class Post extends Model
     {
         return $this->belongsToMany(User::class, 'favorites', 'post_id', 'user_id')->withTimestamps();
     }
+    public function wishList()
+    {
+        return $this->belongsToMany(User::class, 'post_user', 'post_id', 'user_id')->withTimestamps();
+    }
 }

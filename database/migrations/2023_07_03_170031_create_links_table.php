@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('post_id')->constrained('posts');
             $table->string('external_link')->nullable();
             $table->string('external_link_explanation', 200)->nullable();
+            $table->Timestamps( );
         });
     }
 

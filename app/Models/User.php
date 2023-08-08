@@ -50,5 +50,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Post::class, 'favorites', 'user_id', 'post_id')->withTimestamps();
     }
+    public function wishList()
+    {
+        return $this->belongsToMany(Post::class, 'post_user', 'user_id', 'post_id')->withTimestamps();
+    }
      
 }
