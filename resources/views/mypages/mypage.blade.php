@@ -89,7 +89,7 @@
  </div>
 
 <!--自分の投稿の表示、編集、削除-->
-<h2>My Posts</h2>
+<h1>自分の投稿</h1>
     <ul>
         @foreach ($user->posts as $post)
          
@@ -111,8 +111,7 @@
         @endforeach
     </ul>
 <!--いいねした投稿の表示-->
- <h1>My Page</h1>
-    <h2>Liked Posts</h2>
+    <h2>いいねした投稿</h2>
     <ul>
     @if ($likedPosts !== null)
         @foreach ($likedPosts as $post)
@@ -134,5 +133,20 @@
     @endif
     </ul>
 <!--タグ通知機能-->
+<h3>お気に入りタグの登録</h3>
+　<p>どのような機能なのかを開設する文章</p>
+　　　<form action="{{ route('tags.store') }}" method="POST">
+    @csrf
+    @foreach ($tags->groupBy('category') as $category => $groupedTags)
+        <h2>{{ $category }}</h2>
+        @foreach ($groupedTags as $tag)
+            <label>
+                <input type="checkbox" name="tags_array[]" value="{{ $tag->id }}" />
+                {{ $tag->name }}
+            </label>
+        @endforeach
+    @endforeach
+    <button type="submit">お気に入りタグを保存</button>
+</form>
 
 </x-app-layout>

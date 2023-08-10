@@ -54,5 +54,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Post::class, 'post_user', 'user_id', 'post_id')->withTimestamps();
     }
+    public function favoritetag()
+    {
+        return $this->belongsToMany(Post::class, 'tag_user', 'tag_id', 'user_id')->withTimestamps();
+    }
      
 }

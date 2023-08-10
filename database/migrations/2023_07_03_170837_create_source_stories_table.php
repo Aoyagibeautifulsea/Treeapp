@@ -14,9 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('source_stories', function (Blueprint $table) {
-            $table->foreignId('post_id')->constrained('posts');
+            $table->foreignId('post_id')->constrained('posts')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('senior_post_id');
             $table->Timestamps( );
+            
+           
+
         });
     }
 

@@ -15,4 +15,8 @@ class tag extends Model
     {
         return $this->belongsToMany(Post::class, 'post_tag', 'tag_id', 'post_id');
     }
+   public function favoritetag()
+    {
+        return $this->belongsToMany(Post::class, 'tag_user', 'tag_id', 'user_id');
+    }
 }

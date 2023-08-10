@@ -36,6 +36,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/reads/wish_list', [WishListController::class, 'viewWishList'])->name('wish_list.view');
     // <--mypage-->
     Route::get('mypages/mypage',[MypageController::class, 'showmypage'])->name('showmypage');
+    Route::post('/tags/store', [MypageController::class, 'favoritetagstore'])->name('tags.store');
+    Route::get('/mypage', [MyPageController::class, 'showmypage'])->name('backmypage');
     Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
     Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
     Route::get('/posts/{post}/confirm', [PostController::class, 'confirm'])->name('posts.confirm');

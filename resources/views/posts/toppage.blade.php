@@ -88,4 +88,42 @@
             <p>作品がありません</p>
             @endforelse
  
+ <div class="related-posts">
+    @foreach ($relatedPosts as $post)
+    <div class='post'>
+                <h2 class='title'>
+                     <a href="/posts/{{ $post->id }}">{{ $post->title }}></a>
+                </h2>
+            </div>
+             <div class='creator'>
+                <h3 class='creator'>
+            @foreach($post->creators as $creator)
+                     <a href="/posts/{{ $creator->id }}">{{ $creator->name }}</a>
+            @endforeach
+                </h3>
+            </div>   
+            
+             <div class='wish_list'>
+                <!--読みたいリストへの追加ボタン-->
+                 <form action="{{ route('Wish_list',  ['id' => $post->id]) }}" method="POST">
+            @csrf
+            <button type="submit">wish_listに追加</button>
+        </form>
+            </div>
+            
+             <div class='good'>
+                <!--<--いいねボタン-->-->
+                 <form action="{{ route('posts.like', ['id' => $post->id]) }}" method="POST">
+            @csrf
+            <button type="submit">
+                @if ($post->favoritedBy()->where('user_id', auth()->id())->exists())
+                    いいねを解除
+                @else
+                    いいね
+                @endif
+            </button>
+        </form>
+            </div>
+        @endforeach
+</div>
 </x-app-layout>

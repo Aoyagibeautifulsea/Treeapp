@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('post_user', function (Blueprint $table) {
-            $table->foreignId('post_id')->constrained('posts');
+            $table->foreignId('post_id')->constrained('posts')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
             $table->softDeletes();
