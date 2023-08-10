@@ -9,6 +9,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\User;
+use Socialite;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -44,5 +46,33 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+    public function redirectToGoogle()
+    {
+        // Google へのリダイレクト
+        return Socialite::driver('google')->redirect();
+    }
+    public function handleGoogleLogin()
+    {
+        $googleUser = Socialite::driver('google')->stateless()->user();
+        
+        $user = User::where('email', $googleUser->email)->first();
+        // 見つからなければ新しくユーザーを作成
+        if ($user == null) {
+            $user = $this->createUserByGoogle($googleUser);
+        }
+        // ログイン処理
+        \Auth::login($user, true);
+        return redirect('/home');
+       
+    }
+    public function createUserByGoogle($gUser)
+    {
+        $user = User::create([
+            'name'     => $googleUser->name,
+            'email'    => $googleUser->email,
+            'password' => \Hash::make(\Str::random(16)),
+        ]);
+        return $user;
     }
 }

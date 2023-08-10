@@ -1,13 +1,13 @@
 <x-app-layout>
 <h1>Delete Post</h1>
 
-    <p>Are you sure you want to delete this post?</p>
+    <p>本当に投稿を削除してよろしいですか？</p>
 
     <form action="{{ route('posts.destroy', $post->id) }}" method="POST">
         @csrf
         @method('DELETE')
-        <button type="submit">Delete</button>
+        <button type="submit">投稿を削除する</button>
     </form>
 
-    <a href="{{ route('mypage') }}">Cancel</a>
+    <a href="{{ route('backmypage') }}">戻る</a>
  </x-app-layout>

@@ -14,10 +14,13 @@ return new class extends Migration
     public function up()
     {
         Schema::create('links', function (Blueprint $table) {
-            $table->foreignId('post_id')->constrained('posts');
+            $table->id();
+            $table->foreignId('post_id')->constrained('posts')->onUpdate('cascade')->onDelete('cascade');
             $table->string('external_link')->nullable();
             $table->string('external_link_explanation', 200)->nullable();
             $table->Timestamps( );
+            
+           
         });
     }
 

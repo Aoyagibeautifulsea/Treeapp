@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
 use App\Models\Creator;
 use App\Models\Tag;
@@ -54,8 +55,20 @@ public function toppage(Request $request)
         $tags = Tag::all();
 
         $posts = $query->get();
-       
+        $user = Auth::user(); // ログイン中のユーザーを取得する方法に変更
+        
+        if ($user && $user->tags) {
+        $tagIds = $user->tags->pluck('id')->toArray();
 
-         return view('posts.toppage', compact('posts', 'keyword', 'title_Keyword', 'author_Keyword', 'startYear', 'endYear','tags', 'selectedTags'));
+        $relatedPosts = Post::whereIn('tag_id', $tagIds)
+            ->where('user_id', '!=', $user->id)
+            ->inRandomOrder()
+            ->limit(10)
+            ->get();
+    } else {
+        $relatedPosts = collect();
+    }
+        
+         return view('posts.toppage', compact('posts', 'keyword', 'title_Keyword', 'author_Keyword', 'startYear', 'endYear','tags', 'selectedTags','relatedPosts'));
      }
 }

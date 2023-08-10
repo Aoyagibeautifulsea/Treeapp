@@ -14,9 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('inspired_by__stories', function (Blueprint $table) {
-            $table->foreignId('post_id')->constrained('posts');
+            $table->foreignId('post_id')->constrained('posts')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('junior_post_id');
             $table->Timestamps( );
+            
+          
+          
         });
     }
 

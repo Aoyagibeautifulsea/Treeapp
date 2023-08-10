@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
@@ -74,8 +75,26 @@ class MypageController extends Controller
         $user = User::with('posts')->find($userId);
         // ログインユーザーのいいねした投稿を取得
         $likedPosts = $user->favoritePosts;
+        
+        $tags = Tag::all();
 
-        return view('mypages.mypage', compact('user', 'likedPosts'));
+        return view('mypages.mypage', compact('user', 'tags', 'likedPosts'));
+    }
+    
+     public function favoritetagstore(Request $request)
+    {
+    $user = Auth::user(); // ログイン中のユーザーを取得する方法に変更
+    $tagsArray = $request->input('tags_array', []);
+
+    // 既存のお気に入りタグを削除
+    $user->favoritetag()->detach();
+
+    // 新しいお気に入りタグを登録
+    foreach ($tagsArray as $tagId) {
+        $user->favoritetag()->attach($tagId);
+    }
+
+    return redirect()->back()->with('success', 'お気に入りタグが保存されました。');
     }
     
 }

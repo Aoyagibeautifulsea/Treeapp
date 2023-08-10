@@ -46,7 +46,13 @@
                     {{ __('Forgot your password?') }}
                 </a>
             @endif
-            
+        </div>
+        
+        <div class="googleloginbutton">
+        <a href="/login/google" class="btn btn-secondary" role="button">
+            Googleアカウントを使ってログイン
+        </a>
+       　</div>
 
             <x-primary-button class="ml-3">
                 {{ __('Log in') }}

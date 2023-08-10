@@ -51,8 +51,8 @@
      
 </div>
 <div class='image'>
-     @foreach ($post->images as $images)
-     {{ $images->image_path}}
+     @foreach ($post->images as $image)
+      <img src="{{ $image->image_path }}" alt="Image">
      @endforeach
      
 </div>
@@ -93,7 +93,24 @@
       <!--認証されたユーザーのみ-->
       
 </div>      
-        
+     <div class = 'related works'>
+         <p>関連作品</p>
+         @foreach($post->tags as $tag)
+                <li>
+                    <strong>{{ $tag->category }}</strong>: {{ $tag->name }}
+                </li>
+                <ul>
+                    @forelse($tag->posts as $relatedPost)
+                        @if ($relatedPost->id !== $post->id)
+                            <li><a href="/posts/{{ $relatedPost->id }}">{{ $relatedPost->title }}</a></li>
+                        @endif
+                    @empty
+                        <li>関連する作品はありません。</li>
+                    @endforelse
+                </ul>
+            @endforeach
+        </ul>
+     </div>  
         
         <div class="footer">
             <a href="/post/serch_index">戻る</a>

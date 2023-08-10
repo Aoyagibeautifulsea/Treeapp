@@ -21,7 +21,7 @@
 　　　　　　
 　　　　　　<div class='comment'>
 　　　　　　    <h4>作品解説</h4>
-　　　　　　    <input type="text" name="post[explanation]" placeholder="作品に関するっコメントを入力してください" value="{{ old('post.comment.body') }}"/>
+　　　　　　    <input type="text" name="post[explanation]" placeholder="作品に関するっコメントを入力してください" value="{{ old('post.explanation') }}"/>
 　　　　　　      <p class="title__error" style="color:red">{{ $errors->first('post.explanation') }}</p>
 　　　　　　</div>
 　　　　　　
