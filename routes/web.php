@@ -28,9 +28,11 @@ Route::middleware('auth')->group(function () {
 //   <--いいね-->
     Route::post('/posts/{id}/like', [PostController::class, 'like'])->name('posts.like');
     // <search_source_story>
-    Route::get('/posts/search_source_story', [PostController::class, 'showsourcestory'])->name('showsourcestory');
+    Route::get('/posts/search_source_story', [PostController::class, 'serchsourcestory'])->name('serchsourcestory');
+    Route::post('/add/{post}', [PostController::class, 'addsourcestory'])->name('source_story.add');
     // <search_inspired_by_story>
-    Route::get('/posts/search_inspired_by_story', [PostController::class, 'showinspiredbystory'])->name('showinspiredbystory');
+    Route::get('/posts/search_inspired_by_story', [PostController::class, 'searchinspiredbystory'])->name('searchinspiredbystory');
+    Route::post('/add/{post}', [PostController::class, 'addinspiredbystory'])->name('inspired_by_story.add');
     //< wish_list>
     Route::post('/posts/{id}/wish_list', [WishListController::class, 'operateWishList'])->name('Wish_list');
     Route::get('/reads/wish_list', [WishListController::class, 'viewWishList'])->name('wish_list.view');

@@ -11,6 +11,8 @@ use App\Models\Image;
 use App\Models\Comment;
 use App\Models\Link;
 use App\Models\User;
+use App\Models\Source_story;
+use App\Models\Inspired_by_story;
 use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
@@ -20,6 +22,11 @@ class PostController extends Controller
      public function show(Post $post)
     {
         $tags = Tag::all();
+        
+        foreach ($post->tags as $tag) {
+            $tag->relatedPosts = $tag->posts->where('id', '<>', $post->id)->shuffle();
+        }
+        
     return view('posts.show', compact('post', 'tags'));
     }
     // <--投稿制作create-->
@@ -154,15 +161,121 @@ class PostController extends Controller
 // }
 
 //     <--親作品sourcestory-->
-    public function showsourcestory(Post $post)
+    public function serchsourcestory(Request $request)
 {
-    return view('posts.search_source_story')->with(['posts' => $post->getsourcestory()]);
+    $keyword = $request->input('keyword');
+        $title_Keyword =$request->input('title_keyword');
+        $author_Keyword = $request->input('author_keyword');
+        $startYear = $request->input('start_year');
+        $endYear = $request->input('end_year');
+        $selectedTags = $request->input('tags');
+        $selectedTags = [];
+
+        $query = Post::query();
+
+       // 作品名での検索
+        if ($request->input('search_type') === 'title') {
+            if (!empty($keyword)) {
+                $query->where('title', 'LIKE', "%{$keyword}%");
+            }
+        }
+
+        // 作者名での検索
+        if ($request->input('search_type') === 'author') {
+            if (!empty($author_Keyword)) {
+                $query->whereHas('creator', function ($q) use ($author_Keyword) {
+                    $q->where('name', 'LIKE', "%{$author_Keyword}%");
+                });
+            }
+        }
+
+        // 年代での検索
+        if ($request->input('search_type') === 'year') {
+            if (!empty($startYear) && !empty($endYear)) {
+                $query->whereBetween('released_date', [$startYear, $endYear]);
+            }
+        }
+        // タグでの検索
+         if ($request->input('search_type') === 'tag' && !empty($selectedTags)) {
+        // $selectedTagsが空でない場合にのみ検索条件を追加
+        $query->whereHas('tags', function ($q) use ($selectedTags) {
+            $q->whereIn('id', $selectedTags);
+        });
+        }
+        $tags = Tag::all();
+
+        $posts = $query->get();
+    return view('posts.search_source_story', compact('posts', 'keyword', 'title_Keyword', 'author_Keyword', 'startYear', 'endYear','tags', 'selectedTags'));
+}
+    public function addsourcestory(Post $post)
+{
+    $sourceStory = new Source_story();
+        $sourceStory->senior_post_id = $post->id; 
+        $sourceStory->post_id = $post->id; 
+
+        $sourceStory->save();
+
+    return redirect()->back();
 }
 // 　
 
 //   <--子作品inspiredbystory-->
-      public function showinspiredbystory(Post $post)
+      public function searchinspiredbystory(Post $post)
 {
-    return view('posts.search_inspired_by_story')->with(['posts' => $post->getinspiredbystory()]);
+    $keyword = $request->input('keyword');
+        $title_Keyword =$request->input('title_keyword');
+        $author_Keyword = $request->input('author_keyword');
+        $startYear = $request->input('start_year');
+        $endYear = $request->input('end_year');
+        $selectedTags = $request->input('tags');
+        $selectedTags = [];
+
+        $query = Post::query();
+
+       // 作品名での検索
+        if ($request->input('search_type') === 'title') {
+            if (!empty($keyword)) {
+                $query->where('title', 'LIKE', "%{$keyword}%");
+            }
+        }
+
+        // 作者名での検索
+        if ($request->input('search_type') === 'author') {
+            if (!empty($author_Keyword)) {
+                $query->whereHas('creator', function ($q) use ($author_Keyword) {
+                    $q->where('name', 'LIKE', "%{$author_Keyword}%");
+                });
+            }
+        }
+
+        // 年代での検索
+        if ($request->input('search_type') === 'year') {
+            if (!empty($startYear) && !empty($endYear)) {
+                $query->whereBetween('released_date', [$startYear, $endYear]);
+            }
+        }
+        // タグでの検索
+         if ($request->input('search_type') === 'tag' && !empty($selectedTags)) {
+        // $selectedTagsが空でない場合にのみ検索条件を追加
+        $query->whereHas('tags', function ($q) use ($selectedTags) {
+            $q->whereIn('id', $selectedTags);
+        });
+        }
+        $tags = Tag::all();
+
+        $posts = $query->get();
+    return view('posts.search_inspired_by_story', compact('posts', 'keyword', 'title_Keyword', 'author_Keyword', 'startYear', 'endYear','tags', 'selectedTags'));
 }
+     public function addinspiredbystory(Post $post)
+{
+    $sourceStory = new Source_story();
+        $sourceStory->senior_post_id = $post->id; // 投稿のIDを関連付ける
+        $sourceStory->post_id = $post->id; // ソースストーリーに対する投稿のIDを関連付ける
+
+        $sourceStory->save();
+
+    return redirect()->back();
+}
+
+
 }

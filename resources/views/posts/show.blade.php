@@ -10,7 +10,7 @@
        <p>親作品はまだ追加されていません。</p>
      @endif
      
-     <a href="{{ route('showsourcestory') }}">作品を探す</a>
+     <a href="{{ route('serchsourcestory') }}">作品を探す</a>
      <!--認証されたユーザーのみ-->
      
 </div>
@@ -89,7 +89,7 @@
        <p>子作品はまだ追加されていません。</p>
      @endif
      
-      <a href="{{ route('showinspiredbystory') }}">作品を探す</a>
+      <a href="{{ route('searchinspiredbystory') }}">作品を探す</a>
       <!--認証されたユーザーのみ-->
       
 </div>      
@@ -97,12 +97,18 @@
          <p>関連作品</p>
          @foreach($post->tags as $tag)
                 <li>
-                    <strong>{{ $tag->category }}</strong>: {{ $tag->name }}
+                    <strong>{{ $tag->category }}</strong>: {{ $tag->name }}のタグを持つ作品
                 </li>
                 <ul>
                     @forelse($tag->posts as $relatedPost)
                         @if ($relatedPost->id !== $post->id)
                             <li><a href="/posts/{{ $relatedPost->id }}">{{ $relatedPost->title }}</a></li>
+                            
+                            <h1 class='creator'>
+                        @foreach($relatedPost->creators as $creator)
+                        <a href="/posts/{{ $creator->id }}">{{ $creator->name }}</a>
+                        @endforeach
+                     </h1>
                         @endif
                     @empty
                         <li>関連する作品はありません。</li>
