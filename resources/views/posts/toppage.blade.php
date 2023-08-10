@@ -87,8 +87,10 @@
             @empty
             <p>作品がありません</p>
             @endforelse
- 
+            
+ @auth
  <div class="related-posts">
+     <p>お気に入りタグに登録したタグを含む作品</p>
     @foreach ($relatedPosts as $post)
     <div class='post'>
                 <h2 class='title'>
@@ -126,4 +128,5 @@
             </div>
         @endforeach
 </div>
+@endauth
 </x-app-layout>

@@ -1,4 +1,5 @@
 <x-app-layout>
+    <p>親作品を探す</p>
 <div class='search'>
     <form action="{{ route('toppage') }}" method="GET" id="searchForm">
         <input type="text" name="keyword" value="{{ $keyword }}" placeholder="キーワードを入力">

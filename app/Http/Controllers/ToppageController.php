@@ -55,12 +55,15 @@ public function toppage(Request $request)
         $tags = Tag::all();
 
         $posts = $query->get();
+       
         $user = Auth::user(); // ログイン中のユーザーを取得する方法に変更
         
-        if ($user && $user->tags) {
-        $tagIds = $user->tags->pluck('id')->toArray();
+        if ($user && $user->favoritetag) {
+        $tagIds = $user->favoritetag->pluck('id')->toArray();
 
-        $relatedPosts = Post::whereIn('tag_id', $tagIds)
+        $relatedPosts = Post::whereHas('tags', function ($q) use ($tagIds) {
+        $q->whereIn('id', $tagIds);
+        })
             ->where('user_id', '!=', $user->id)
             ->inRandomOrder()
             ->limit(10)
