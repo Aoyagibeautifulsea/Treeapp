@@ -14,6 +14,8 @@ use App\Models\User;
 use App\Models\Source_story;
 use App\Models\Inspired_by_story;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
+use Cloudinary;
 
 class PostController extends Controller
 {
@@ -22,13 +24,31 @@ class PostController extends Controller
      public function show(Post $post)
     {
         $tags = Tag::all();
+        $post_id = $post->id;
         
         foreach ($post->tags as $tag) {
             $tag->relatedPosts = $tag->posts->where('id', '<>', $post->id)->shuffle();
         }
         
-    return view('posts.show', compact('post', 'tags'));
+    return view('posts.show', compact('post', 'tags','post_id'));
     }
+    public function storecomment(Request $request, Post $post, Comment $comment)
+{
+    // バリデーション?
+
+    $comment->post_id = $request->post_id;
+    $comment->user_id = auth()->id();
+    $comment->body = $request->body;
+    $comment->save();
+
+    return back();
+}
+   public function deletecomment(Comment $comment)
+{
+    $comment->delete();
+    return back();
+}
+    
     // <--投稿制作create-->
      public function create()
     {
@@ -58,7 +78,8 @@ class PostController extends Controller
      $creator->post_id = $post->id;
      $creator->save();
      
-     $image->image_path = $request['image_path'];
+     $image_url = Cloudinary::upload($request->file('image_path')->getRealPath())->getSecurePath();
+     $image->image_url = $image_url;
      $image->post_id = $post->id;
      $image->save();
      
@@ -161,16 +182,16 @@ class PostController extends Controller
 // }
 
 //     <--親作品sourcestory-->
-    public function serchsourcestory(Request $request)
+    public function searchSourceStory(Request $request)
 {
-    $keyword = $request->input('keyword');
+        $keyword = $request->input('keyword');
         $title_Keyword =$request->input('title_keyword');
         $author_Keyword = $request->input('author_keyword');
         $startYear = $request->input('start_year');
         $endYear = $request->input('end_year');
         $selectedTags = $request->input('tags');
         $selectedTags = [];
-
+        $post_id = $request->input('post_id');
         $query = Post::query();
 
        // 作品名での検索
@@ -205,22 +226,21 @@ class PostController extends Controller
         $tags = Tag::all();
 
         $posts = $query->get();
-    return view('posts.search_source_story', compact('posts', 'keyword', 'title_Keyword', 'author_Keyword', 'startYear', 'endYear','tags', 'selectedTags'));
+    return view('posts.search_source_story', compact('posts', 'keyword', 'title_Keyword', 'author_Keyword', 'startYear', 'endYear','tags', 'selectedTags', 'post_id'));
 }
-    public function addsourcestory(Post $post)
+    public function addsourcestory(Request $request, Post $post, Source_story $sourceStory)
 {
-    $sourceStory = new Source_story();
-        $sourceStory->senior_post_id = $post->id; 
-        $sourceStory->post_id = $post->id; 
-
+        $sourceStory->senior_post_id = $request['senior_post_id'];
+        $sourceStory->post_id = $request['post_id']; 
+        
         $sourceStory->save();
 
-    return redirect()->back();
+    return redirect()->route('post.show', ['post' => $post->id]);
 }
 // 　
 
 //   <--子作品inspiredbystory-->
-      public function searchinspiredbystory(Post $post)
+      public function searchinspiredbystory(Request $request)
 {
     $keyword = $request->input('keyword');
         $title_Keyword =$request->input('title_keyword');
@@ -229,7 +249,7 @@ class PostController extends Controller
         $endYear = $request->input('end_year');
         $selectedTags = $request->input('tags');
         $selectedTags = [];
-
+        $post_id = $request->input('post_id');
         $query = Post::query();
 
        // 作品名での検索
@@ -264,17 +284,17 @@ class PostController extends Controller
         $tags = Tag::all();
 
         $posts = $query->get();
-    return view('posts.search_inspired_by_story', compact('posts', 'keyword', 'title_Keyword', 'author_Keyword', 'startYear', 'endYear','tags', 'selectedTags'));
+    return view('posts.search_inspired_by_story', compact('posts', 'keyword', 'title_Keyword', 'author_Keyword', 'startYear', 'endYear','tags', 'selectedTags','post_id'));
 }
-     public function addinspiredbystory(Post $post)
+     public function addinspiredbystory(Request $request, Post $post, Inspired_by_story $inspiredbyStory)
 {
-    $sourceStory = new Source_story();
-        $sourceStory->senior_post_id = $post->id; // 投稿のIDを関連付ける
-        $sourceStory->post_id = $post->id; // ソースストーリーに対する投稿のIDを関連付ける
+    $inspiredbyStory = new Source_story();
+        $inspiredbyStory->senior_post_id = $post->id; // 投稿のIDを関連付ける
+        $inspiredbyStory->post_id = $post->id; // ソースストーリーに対する投稿のIDを関連付ける
 
-        $sourceStory->save();
+        $inspiredbyStory->save();
 
-    return redirect()->back();
+    return redirect()->route('post.show', ['post' => $post->id]);
 }
 
 

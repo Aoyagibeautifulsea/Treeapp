@@ -28,10 +28,11 @@ Route::middleware('auth')->group(function () {
 //   <--いいね-->
     Route::post('/posts/{id}/like', [PostController::class, 'like'])->name('posts.like');
     // <search_source_story>
-    Route::get('/posts/search_source_story', [PostController::class, 'serchsourcestory'])->name('serchsourcestory');
-    Route::post('/add/{post}', [PostController::class, 'addsourcestory'])->name('source_story.add');
+    Route::get('/posts/{post}/search_source_story', [PostController::class, 'searchSourceStory'])->name('search_source_story');
+    Route::post('/posts/{post}/search_source_story', [PostController::class, 'addsourceStory'])->name('source_story.add');
+    // Route::post('/add/{post}', [PostController::class, 'addsourcestory'])->name('source_story.add');
     // <search_inspired_by_story>
-    Route::get('/posts/search_inspired_by_story', [PostController::class, 'searchinspiredbystory'])->name('searchinspiredbystory');
+    Route::get('/posts/search_inspired_by_story', [PostController::class, 'searchinspiredbystory'])->name('search_inspiredby_story');
     Route::post('/add/{post}', [PostController::class, 'addinspiredbystory'])->name('inspired_by_story.add');
     //< wish_list>
     Route::post('/posts/{id}/wish_list', [WishListController::class, 'operateWishList'])->name('Wish_list');
@@ -52,6 +53,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [MypageController::class, 'destroy'])->name('profile.destroy');
 });
    // <--show-->
-Route::get('/posts/{post}', [PostController::class ,'show']);
+Route::get('/posts/{post}', [PostController::class ,'show'])->name('post.show');
+Route::delete('/comments/{comment}', [PostController::class, 'deletecomment'])->name('comments.delete');
+Route::post('/comments', [PostController::class, 'storecomment'])->name('comments.store');
 
 require __DIR__.'/auth.php';

@@ -9,6 +9,8 @@ class source_story extends Model
 {
     use HasFactory;
     
+    protected $fillable = ['senior_post_id'];
+    
     public function sourcestory()   
 {
     return $this->belongsTo(Post::class);  
