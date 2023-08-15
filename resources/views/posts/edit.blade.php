@@ -10,10 +10,13 @@
                   <p class="title__error" style="color:red">{{ $errors->first('post.title') }}</p>
             </div>
             
-　　　　　　<div class='creator'>
-　　　　　　    <h2>作者</h2>
-　　　　　　    <input type="text" name="name" placeholder="作者名を入力してください" value="{{ $post->creator->name}}"/>
-　　　　　　      <p class="title__error" style="color:rd">{{ $errors->first('name') }}</p>
+       <div class='creator'>
+           <h2>作者</h2>
+           @foreach($post->creators as $creator)
+           <input type="text" name="name" placeholder="作者名を入力してください" value="{{ $creator->name }}"/>
+           <p class="title__error" style="color:rd">{{ $errors->first('name') }}</p>
+           @endforeach
+　　　　　　      
 　　　　　　</div>
 　　　　　　<div clsss='released_date'>
 　　　　　　    <h3>作品が発表された年</h3>
@@ -29,15 +32,19 @@
 　　　　　　
 　　　　　　<div class='link'>
 　　　　　　    <h5>外部リンク</h5>
-　　　　　　    <input type="text" name="external_link" placeholder="作品に関するリンクを入力してください（任意）" value="{{ $post->link->external_link }}"/>
+　　　　　　     @foreach ($post->links as $link)
+　　　　　　    <input type="text" name="external_link" placeholder="作品に関するリンクを入力してください（任意）" value="{{ $link->external_link }}"/>
 　　　　　　      <p class="title__error" style="color:red">{{ $errors->first('external_link') }}</p>
+　　　　　　     @endforeach
 　　　　　  </div>
-　　　　　   
-　　　　　   <div class='link_explanation'>
-　　　　　　    <h6>リンクの解説</h6>
-　　　　　　     <input type="text" name="external_link_explanation" placeholder="リンクの解説を入力してください（任意）" value="{{ $post->link->external_link_explanation}}"/>
-　　　　　　       <p class="title__error" style="color:red">{{ $errors->first('external_link_explanation') }}</p>
-　　　　　　</div>
+　　　　　  
+        <div class='link_explanation'>
+            <h6>リンクの解説</h6>
+            @foreach ($post->links as $link)
+            <input type="text" name="external_link_explanation" placeholder="リンクの解説を入力してください（任意）" value="{{ $link->external_link_explanation}}"/>
+            <p class="title__error" style="color:red">{{ $errors->first('external_link_explanation') }}</p>
+            @endforeach
+            </div>
 　　　　　　
 　　　　　　 <div class='tag'>
 　　　　        <h7>タグの選択</h7>
@@ -54,8 +61,10 @@
 　　　　　  
 　　　　　　<div class='image'>
 　　　　　　    <h8>作品関連画像</h8>
-　　　　　　    <input type="file" name="image_path" value="{{ $post->image->image_path }}"/>
+　　　　　　     @foreach ($post->images as $image)
+　　　　　　    <input type="file" name="image_path" value="{{ $image->image_path }}"/>
 　　　　　　     <p class="image__error" style="color: red;">{{ $errors->first('image_path') }}</p>
+　　　　　　     @endforeach 
 　　　　　　</div>
 　　　　　　
 　　　　　　<div class='age_limit'>

@@ -24,7 +24,7 @@ class PostRequest extends FormRequest
     public function rules()
     {
         return 
-        ['post.title' => 'required|string|max:100',
+        ['post.title' => 'required|string|max:100|unique:posts,title',
          'post.released_date' => 'required|regex:/^[0-9]+$/',
          'post.released_date' => 'required|regex:/^\d{1,4}$/',
          'name' => 'required|string|max:100',

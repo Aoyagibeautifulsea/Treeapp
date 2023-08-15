@@ -33,7 +33,7 @@
 　　　　　   
 　　　　　   <div class='link_explanation'>
 　　　　　　    <h6>リンクの解説</h6>
-　　　　　　     <input type="text" name="external_link_explanation" placeholder="リンクの解説を入力してください（任意）" value="{{ old('external_link_explanation') }}"/>
+　　　　　　     <input type="text" name="external_link_explanation" placeholder="リンクの解説を入力してください（任意）" value="{{ old('external_link_explanation') }}" enctype="multipart/form-data"/>
 　　　　　　       <p class="title__error" style="color:red">{{ $errors->first('external_link_explanation') }}</p>
 　　　　　　</div>
 　　　　　　

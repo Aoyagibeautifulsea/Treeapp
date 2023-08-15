@@ -43,7 +43,7 @@ class MypageController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return back()->with('status', 'profile-updated');
     }
 
     /**
@@ -83,7 +83,7 @@ class MypageController extends Controller
     
      public function favoritetagstore(Request $request)
     {
-    $user = Auth::user(); // ログイン中のユーザーを取得する方法に変更
+    $user = Auth::user(); // ログイン中のユーザーを取得する
     $tagsArray = $request->input('tags_array', []);
 
     // 既存のお気に入りタグを削除

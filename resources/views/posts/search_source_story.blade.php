@@ -59,10 +59,13 @@
             </div>   
             
             <div class='add_button'>
-                 <form action="{{ route('source_story.add', $post->id) }}" method="POST">
-            @csrf
-            <button type="submit">追加</button>
-        </form>
+    <form action="{{ route('source_story.add',$post->id )}}" method="POST">
+        @csrf
+        <input type="hidden" name="senior_post_id" value="{{ $post->id }}">
+        <input type="hidden" name="post_id" value="{{ $post_id }}">
+        <button type="submit">追加</button>
+    </form>
+</div>
             @empty
             <p>作品がありません</p>
             @endforelse

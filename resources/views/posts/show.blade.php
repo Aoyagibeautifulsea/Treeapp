@@ -9,12 +9,14 @@
      @else
        <p>親作品はまだ追加されていません。</p>
      @endif
-     
-     <a href="{{ route('serchsourcestory') }}">作品を探す</a>
+     <form action="{{ route('search_source_story', ['post' => $post_id]) }}" method = "GET">
+          <input type='hidden' name = "post_id" value="{{ $post->id}}" />
+         <button>作品を探す</button>
+         </form>
      <!--認証されたユーザーのみ-->
      
 </div>
-
+{{$post_id}}
 <div class='postcontents'>
     
 <div class="title">
@@ -45,16 +47,52 @@
 
 <div class='link'>
      @foreach ($post->links as $link)
-     {{ $link->external_link}}
+     {{ $link->external_link }}
      {{ $link->external_link_explanation}}
      @endforeach
      
 </div>
 <div class='image'>
      @foreach ($post->images as $image)
-      <img src="{{ $image->image_path }}" alt="Image">
+      <img src="{{ $image->image_url }}" alt="画像が追加されていません">
      @endforeach
-     
+</div>
+
+<div class='comment'>
+    <h2>コメント</h2>
+@if ($post->comments->count() > 0)
+    @foreach ($post->comments as $comment)
+        <div class="comment">
+            @if ($comment->user)
+                <p><strong>{{ $comment->user->name }}</strong>: {{ $comment->body }}</p>
+                <!-- 削除ボタン -->
+                @if (auth()->user() && auth()->user()->id === $comment->user_id)
+                    <form action="{{ route('comments.delete', $comment->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">削除</button>
+                    </form>
+                @endif
+            @else
+                <p>ユーザー情報が見つかりません</p>
+            @endif
+        </div>
+    @endforeach
+@else
+    <p>コメントはありません。</p>
+@endif
+    
+    @auth
+    <div class="comment-form">
+        <h3>コメントを投稿する</h3>
+        <form action="{{ route('comments.store') }}" method="POST">
+            @csrf
+            <input type="hidden" name="post_id" value="{{ $post->id }}">
+            <textarea name="body" rows="4" cols="50" required></textarea>
+            <button type="submit">コメント投稿</button>
+        </form>
+    </div>
+@endauth
 </div>
 
 </div>
@@ -89,7 +127,10 @@
        <p>子作品はまだ追加されていません。</p>
      @endif
      
-      <a href="{{ route('searchinspiredbystory') }}">作品を探す</a>
+     <form action="{{ route('search_inspiredby_story', ['post' => $post_id]) }}" method = "GET">
+          <input type='hidden' name = "post_id" value="{{ $post->id}}" />
+         <button>作品を探す</button>
+         </form>
       <!--認証されたユーザーのみ-->
       
 </div>      
