@@ -13,7 +13,7 @@
        <div class='creator'>
            <h2>作者</h2>
            @foreach($post->creators as $creator)
-           <input type="text" name="name" placeholder="作者名を入力してください" value="{{ $creator->name }}"/>
+           <input type="text" name="creator_name[]"  placeholder="作者名を入力してください" value="{{ $creator->name }}"/>
            <p class="title__error" style="color:rd">{{ $errors->first('name') }}</p>
            @endforeach
                   
@@ -33,12 +33,12 @@
             <div class='link'>
     <h5>外部リンク</h5>
     @if ($post->links->isEmpty())
-        <input type="text" name="external_link" placeholder="作品に関するリンクを入力してください（任意）" value=""/>
+        <input type="text" name="external_link[]" placeholder="作品に関するリンクを入力してください（任意）" value=""/>
         <p class="title__error" style="color:red">{{ $errors->first('external_link') }}</p>
     @else
         @foreach ($post->links as $link)
-            <input type="text" name="external_link" placeholder="作品に関するリンクを入力してください（任意）" value="{{ $link->external_link }}"/>
-            <p class="title__error" style="color:red">{{ $errors->first('external_link') }}</p>
+            <input type="text" name="external_link[]" placeholder="作品に関するリンクを入力してください（任意）" value="{{ $link->external_link }}"/>
+            <p class="title__error" style="color:red">{{ $errors->first('external_link.$index') }}</p>
         @endforeach
     @endif
 </div>
@@ -46,12 +46,12 @@
 <div class='link_explanation'>
     <h6>リンクの解説</h6>
     @if ($post->links->isEmpty())
-        <input type="text" name="external_link_explanation" placeholder="リンクの解説を入力してください（任意）" value=""/>
+        <input type="text" name="external_link_explanation[]" placeholder="リンクの解説を入力してください（任意）" value=""/>
         <p class="title__error" style="color:red">{{ $errors->first('external_link_explanation') }}</p>
     @else
         @foreach ($post->links as $link)
-            <input type="text" name="external_link_explanation" placeholder="リンクの解説を入力してください（任意）" value="{{ $link->external_link_explanation}}"/>
-            <p class="title__error" style="color:red">{{ $errors->first('external_link_explanation') }}</p>
+            <input type="text" name="external_link_explanation[]" placeholder="リンクの解説を入力してください（任意）" value="{{ $link->external_link_explanation}}"/>
+            <p class="title__error" style="color:red">{{ $errors->first('external_link_explanation.$index') }}</p>
         @endforeach
     @endif
 </div>

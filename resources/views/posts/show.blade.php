@@ -59,30 +59,7 @@
 </div>
 
 <div class='comment'>
-    <h2>コメント</h2>
-@if ($post->comments->count() > 0)
-    @foreach ($post->comments as $comment)
-        <div class="comment">
-            @if ($comment->user)
-                <p><strong>{{ $comment->user->name }}</strong>: {{ $comment->body }}</p>
-                <!-- 削除ボタン -->
-                @if (auth()->user() && auth()->user()->id === $comment->user_id)
-                    <form action="{{ route('comments.delete', $comment->id) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit">削除</button>
-                    </form>
-                @endif
-            @else
-                <p>ユーザー情報が見つかりません</p>
-            @endif
-        </div>
-    @endforeach
-@else
-    <p>コメントはありません。</p>
-@endif
     
-    @auth
     <div class="comment-form">
         <h3>コメントを投稿する</h3>
         <form action="{{ route('comments.store') }}" method="POST">
@@ -92,7 +69,26 @@
             <button type="submit">コメント投稿</button>
         </form>
     </div>
-@endauth
+
+   <div class="comments-section">
+        <h3>コメント一覧</h3>
+        @foreach ($post->comments as $comment)
+            <div class="comment">
+                <p><strong>{{ $comment->user->name }}</strong></p>
+                <p>{{ $comment->body }}</p>
+                
+                @auth
+                @if (auth()->user()->id === $comment->user_id)
+                    <form action="{{ route('comments.delete', $comment) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">削除</button>
+                    </form>
+                @endif
+            @endauth
+            </div>
+        @endforeach
+    </div>
 </div>
 
 </div>
@@ -179,13 +175,5 @@
             @endforeach
         </ul>
      </div>  
-        
-        <div class="footer">
-            <a href="/post/serch_index">戻る</a>
-        </div>
-<div class='review'>
-     
-</div>
     
-
 </x-app-layout>

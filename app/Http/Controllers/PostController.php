@@ -26,11 +26,13 @@ class PostController extends Controller
         $tags = Tag::all();
         $post_id = $post->id;
         
+        $comments = $post->comments()->with('user')->get();
+        
         foreach ($post->tags as $tag) {
             $tag->relatedPosts = $tag->posts->where('id', '<>', $post->id)->shuffle();
         }
         
-    return view('posts.show', compact('post', 'tags','post_id'));
+    return view('posts.show', compact('post', 'tags','post_id', 'comments'));
     }
     public function storecomment(Request $request, Post $post, Comment $comment)
 {
@@ -74,9 +76,16 @@ class PostController extends Controller
      
      $post->fill($post_input)->save();
      
-     $creator->name = $request['name'];
-     $creator->post_id = $post->id;
-     $creator->save();
+     $creatorNames = $request->input('name', []); // 著者名の配列を取得
+
+    foreach ($creatorNames as $index => $creatorName) {
+        if (!empty($creatorName)) { // 空の著者名は保存しない
+            $creatorInstance = new Creator();
+            $creatorInstance->name = $creatorName;
+            $creatorInstance->post_id = $post->id;
+            $creatorInstance->save();
+        }
+    }
      
      if ($request->hasFile('image_url')) {
      $image_url = Cloudinary::upload($request->file('image_url')->getRealPath())->getSecurePath();
@@ -85,10 +94,18 @@ class PostController extends Controller
      $image->save();
      }
      
-     $link->external_link = $request['external_link'];
-     $link->external_link_explanation = $request['external_link_explanation'];
-     $link->post_id = $post->id;
-     $link->save();
+     $externalLinks = $request->input('external_link', []);
+     $externalLinkExplanations = $request->input('external_link_explanation', []);
+
+    for ($i = 0; $i < count($externalLinks); $i++) {
+        if (!empty($externalLinks[$i])) { 
+            $linkInstance = new Link();
+            $linkInstance->external_link = $externalLinks[$i];
+            $linkInstance->external_link_explanation = $externalLinkExplanations[$i] ?? null;
+            $linkInstance->post_id = $post->id;
+            $linkInstance->save();
+        }
+    }
      
      $gettag = $request->input('tags_array', []);
     // タグを関連付ける
@@ -124,21 +141,38 @@ class PostController extends Controller
 
         $post->fill($post_input)->save();
 
-        $creator->name = $request['name'];
-        $creator->post_id = $post->id;
-        $creator->save();
+        $creatorNames = $request->input('creator_name', []); // 著者名の配列を取得
 
-        if ($request->hasFile('image_url')) {
-        $image_url = Cloudinary::upload($request->file('image_url')->getRealPath())->getSecurePath();
-        $image->image_url = $image_url;
-        $image->post_id = $post->id;
-        $image->save();
+foreach ($creatorNames as $index => $creatorName) {
+    if (!empty($creatorName)) { // 空の著者名は保存しない
+        $creatorInstance = new Creator();
+        $creatorInstance->name = $creatorName;
+        $creatorInstance->post_id = $post->id;
+        $creatorInstance->save();
+    }
+}
+     
+     if ($request->hasFile('image_url')) {
+     $image_url = Cloudinary::upload($request->file('image_url')->getRealPath())->getSecurePath();
+     $image->image_url = $image_url;
+     $image->post_id = $post->id;
+     $image->save();
      }
-
-        $link->external_link = $request['external_link'];
-        $link->external_link_explanation = $request['external_link_explanation'];
-        $link->post_id = $post->id;
-        $link->save();
+     
+     $externalLinks = $request->input('external_link', []);
+     $externalLinkExplanations = $request->input('external_link_explanation', []);
+    
+    if (!empty($externalLinks)) {
+    for ($i = 0; $i < count($externalLinks); $i++) {
+        if (!empty($externalLinks[$i])) { 
+            $linkInstance = new Link();
+            $linkInstance->external_link = $externalLinks[$i];
+            $linkInstance->external_link_explanation = $externalLinkExplanations[$i] ?? null;
+            $linkInstance->post_id = $post->id;
+            $linkInstance->save();
+        }
+    }
+    }
 
         $gettag = $request->input('tags_array', []);
         // タグを関連付ける

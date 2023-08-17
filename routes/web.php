@@ -51,10 +51,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [MypageController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [MypageController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [MypageController::class, 'destroy'])->name('profile.destroy');
+     // <--show-->
+    Route::delete('/comments/{comment}', [PostController::class, 'deletecomment'])->name('comments.delete');
+    Route::post('/comments', [PostController::class, 'storecomment'])->name('comments.store');
 });
    // <--show-->
 Route::get('/posts/{post}', [PostController::class ,'show'])->name('post.show');
-Route::delete('/comments/{comment}', [PostController::class, 'deletecomment'])->name('comments.delete');
-Route::post('/comments', [PostController::class, 'storecomment'])->name('comments.store');
 
 require __DIR__.'/auth.php';
