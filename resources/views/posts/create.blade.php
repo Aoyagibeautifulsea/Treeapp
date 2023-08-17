@@ -9,10 +9,22 @@
             </div>
             
             <div class='creator'>
-                <h2>作者</h2>
-                <input type="text" name="name" placeholder="作者名を入力してください" value="{{ old('name') }}"/>
-                  <p class="title__error" style="color:rd">{{ $errors->first('name') }}</p>
-            </div>
+    <h2>作者</h2>
+    <div class="creator-forms">
+        <div class="creator-form">
+            <input type="text" name="name[]" placeholder="作者名を入力してください" value="{{ old('name.0') }}" required />
+            <p class="title__error" style="color:red">{{ $errors->first('name.0') }}</p>
+        </div>
+        <div class="creator-form">
+            <input type="text" name="name[]" placeholder="作者名を入力してください" value="{{ old('name.1') }}" />
+            <p class="title__error" style="color:red">{{ $errors->first('name.1') }}</p>
+        </div>
+        <div class="creator-form">
+            <input type="text" name="name[]" placeholder="作者名を入力してください" value="{{ old('name.2') }}" />
+            <p class="title__error" style="color:red">{{ $errors->first('name.2') }}</p>
+        </div>
+    </div>
+</div>
             <div clsss='released_date'>
                 <h3>作品が発表された年</h3>
                 <input type="number" name="post[released_date]" min="1" max="9999" step="1" placeholder="作品が発表された年を半角数字で入力してください" value="{{ old('post.released_date') }}"/>
@@ -26,16 +38,40 @@
             </div>
             
             <div class='link'>
-                <h5>外部リンク</h5>
-                <input type="text" name="external_link" placeholder="作品に関するリンクを入力してください（任意）" value="{{ old('external_link') }}"/>
-                  <p class="title__error" style="color:red">{{ $errors->first('external_link') }}</p>
-            </div>
-             
-             <div class='link_explanation'>
-                <h6>リンクの解説</h6>
-                 <input type="text" name="external_link_explanation" placeholder="リンクの解説を入力してください（任意）" value="{{ old('external_link_explanation') }}" enctype="multipart/form-data"/>
-                   <p class="title__error" style="color:red">{{ $errors->first('external_link_explanation') }}</p>
-            </div>
+    <h5>外部リンク</h5>
+    <input type="text" name="external_link[]" placeholder="作品に関するリンクを入力してください（任意）" value="{{ old('external_link.0') }}"/>
+    <p class="title__error" style="color:red">{{ $errors->first('external_link.0') }}</p>
+</div>
+
+<div class='link_explanation'>
+    <h6>リンクの解説</h6>
+    <input type="text" name="external_link_explanation[]" placeholder="リンクの解説を入力してください（任意）" value="{{ old('external_link_explanation.0') }}" />
+    <p class="title__error" style="color:red">{{ $errors->first('external_link_explanation.0') }}</p>
+</div>
+
+<div class='link'>
+    <h5>外部リンク</h5>
+    <input type="text" name="external_link[]" placeholder="作品に関するリンクを入力してください（任意）" value="{{ old('external_link.1') }}" />
+    <p class="title__error" style="color:red">{{ $errors->first('external_link.1') }}</p>
+</div>
+
+<div class='link_explanation'>
+    <h6>リンクの解説</h6>
+    <input type="text" name="external_link_explanation[]" placeholder="リンクの解説を入力してください（任意）" value="{{ old('external_link_explanation.1') }}" />
+    <p class="title__error" style="color:red">{{ $errors->first('external_link_explanation.1') }}</p>
+</div>
+
+<div class='link'>
+    <h5>外部リンク</h5>
+    <input type="text" name="external_link[]" placeholder="作品に関するリンクを入力してください（任意）" value="{{ old('external_link.2') }}" />
+    <p class="title__error" style="color:red">{{ $errors->first('external_link.2') }}</p>
+</div>
+
+<div class='link_explanation'>
+    <h6>リンクの解説</h6>
+    <input type="text" name="external_link_explanation[]" placeholder="リンクの解説を入力してください（任意）" value="{{ old('external_link_explanation.2') }}" />
+    <p class="title__error" style="color:red">{{ $errors->first('external_link_explanation.2') }}</p>
+</div>
             
              <div class='tag'>
                 <h7>タグの選択</h7>

@@ -27,11 +27,12 @@ class PostRequest extends FormRequest
         ['post.title' => 'required|string|max:100|unique:posts,title',
          'post.released_date' => 'required|regex:/^[0-9]+$/',
          'post.released_date' => 'required|regex:/^\d{1,4}$/',
-         'name' => 'required|string|max:100',
+         'name.0' => 'required|string|max:100', // 一つ目の名前フィールドは必須
+         'name.*' => 'nullable|string|max:100', // 他の名前フィールドは任意
          'post.explanation' => 'required|string|max:300',
          'image_url' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-         'external_link' => 'nullable|url',
-         'external_link_explanation' => 'nullable|string|max:150',
+         'external_link.*' => 'nullable|url',
+         'external_link_explanation.*' => 'nullable|string|max:150',
          
             
         ];
