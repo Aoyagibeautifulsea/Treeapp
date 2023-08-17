@@ -20,7 +20,10 @@ public function toppage(Request $request)
         $endYear = $request->input('end_year');
         $selectedTags = $request->input('tags');
         $selectedTags = [];
-
+        $user = Auth::user();
+        
+        $showAgeLimitOne = $request->input('show_age_limit_one', false);
+        
         $query = Post::query();
 
        // 作品名での検索
@@ -56,7 +59,7 @@ public function toppage(Request $request)
 
         $posts = $query->get();
        
-        $user = Auth::user(); // ログイン中のユーザーを取得する方法に変更
+        // $user = Auth::user(); // ログイン中のユーザーを取得する方法に変更
         
         if ($user && $user->favoritetag) {
         $tagIds = $user->favoritetag->pluck('id')->toArray();
@@ -71,7 +74,11 @@ public function toppage(Request $request)
     } else {
         $relatedPosts = collect();
     }
-        
-         return view('posts.toppage', compact('posts', 'keyword', 'title_Keyword', 'author_Keyword', 'startYear', 'endYear','tags', 'selectedTags','relatedPosts'));
-     }
+    
+    if (auth()->check() && $user->adult_check === 1) {
+        return view('posts.adult_check_toppage', compact('posts', 'keyword', 'title_Keyword', 'author_Keyword', 'startYear', 'endYear','tags', 'selectedTags','relatedPosts','showAgeLimitOne'));
+    } else {
+        return view('posts.toppage', compact('posts', 'keyword', 'title_Keyword', 'author_Keyword', 'startYear', 'endYear','tags', 'selectedTags','relatedPosts','showAgeLimitOne'));
+    }
+    }
 }

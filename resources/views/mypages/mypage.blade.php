@@ -3,15 +3,6 @@
  <div class='profile'>
      <h>プロフィールの設定</h>
      <section>
-    <header>
-        <h2 class="text-lg font-medium text-gray-900">
-            {{ __('Profile Information') }}
-        </h2>
-
-        <p class="mt-1 text-sm text-gray-600">
-            {{ __("Update your account's profile information and email address.") }}
-        </p>
-    </header>
 
     <form id="send-verification" method="post" action="{{ route('verification.send') }}">
         @csrf
@@ -50,7 +41,13 @@
                 </div>
             @endif
         </div>
-
+        <div>
+        <label for="adult_check" class="flex items-center">
+        <input type="checkbox" id="adult_check" name="adult_check" class="mr-2" {{ $user->adult_check ? 'checked' : '' }}>
+        <span>{{ __('１８歳以上ならチェックをお入れください（成人向けの作品も表示できるようになります）') }}</span>
+        </label>
+        </div>
+        
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 
@@ -134,8 +131,8 @@
     </ul>
 <!--タグ通知機能-->
 <h3>お気に入りタグの登録</h3>
-　<p>どのような機能なのかを開設する文章</p>
-　　　<form action="{{ route('tags.store') }}" method="POST">
+  <p>どのような機能なのかを開設する文章</p>
+      <form action="{{ route('tags.store') }}" method="POST">
     @csrf
     @foreach ($tags->groupBy('category') as $category => $groupedTags)
         <h2>{{ $category }}</h2>

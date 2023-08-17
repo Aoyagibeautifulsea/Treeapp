@@ -47,8 +47,8 @@
 
 <div class='link'>
      @foreach ($post->links as $link)
-     {{ $link->external_link }}
-     {{ $link->external_link_explanation}}
+    <a href='{{ $link->external_link }}'> {{ $link->external_link }}</a>
+    <P>{{ $link->external_link_explanation}}</p>
      @endforeach
      
 </div>
@@ -145,11 +145,32 @@
                         @if ($relatedPost->id !== $post->id)
                             <li><a href="/posts/{{ $relatedPost->id }}">{{ $relatedPost->title }}</a></li>
                             
-                            <h1 class='creator'>
+                            <div class='creator'>
                         @foreach($relatedPost->creators as $creator)
                         <a href="/posts/{{ $creator->id }}">{{ $creator->name }}</a>
                         @endforeach
-                     </h1>
+                     </div>
+                     <div class='wish_list'>
+                <!--読みたいリストへの追加ボタン-->
+                 <form action="{{ route('Wish_list',  ['id' => $post->id]) }}" method="POST">
+            @csrf
+            <button type="submit">wish_listに追加</button>
+        </form>
+            </div>
+            
+             <div class='good'>
+                 <!--いいねボタン-->
+                 <form action="{{ route('posts.like', ['id' => $post->id]) }}" method="POST">
+            @csrf
+            <button type="submit">
+                @if ($post->favoritedBy()->where('user_id', auth()->id())->exists())
+                    いいねを解除
+                @else
+                    いいね
+                @endif
+            </button>
+        </form>
+            </div>
                         @endif
                     @empty
                         <li>関連する作品はありません。</li>
