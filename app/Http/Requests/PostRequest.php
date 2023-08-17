@@ -29,9 +29,9 @@ class PostRequest extends FormRequest
          'post.released_date' => 'required|regex:/^\d{1,4}$/',
          'name' => 'required|string|max:100',
          'post.explanation' => 'required|string|max:300',
-         'image_path' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-         'external_link' => 'required|url',
-         'external_link_explanation' => 'required|string|max:150',
+         'image_url' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+         'external_link' => 'nullable|url',
+         'external_link_explanation' => 'nullable|string|max:150',
          
             
         ];

@@ -34,17 +34,24 @@ class MypageController extends Controller
      * Update the user's profile information.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
+{
+    $validatedData = $request->validated();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
+    // Update the user's profile information
+    $user = $request->user();
+    $user->fill($validatedData);
 
-        $request->user()->save();
+    // Check if the adult_check checkbox was submitted and update the value accordingly
+    $user->adult_check = $request->has('adult_check');
 
-        return back()->with('status', 'profile-updated');
+    if ($user->isDirty('email')) {
+        $user->email_verified_at = null;
     }
+
+    $user->save();
+
+    return back()->with('status', 'profile-updated');
+}
 
     /**
      * Delete the user's account.

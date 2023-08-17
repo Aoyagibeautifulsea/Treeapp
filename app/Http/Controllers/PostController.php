@@ -78,10 +78,12 @@ class PostController extends Controller
      $creator->post_id = $post->id;
      $creator->save();
      
-     $image_url = Cloudinary::upload($request->file('image_path')->getRealPath())->getSecurePath();
+     if ($request->hasFile('image_url')) {
+     $image_url = Cloudinary::upload($request->file('image_url')->getRealPath())->getSecurePath();
      $image->image_url = $image_url;
      $image->post_id = $post->id;
      $image->save();
+     }
      
      $link->external_link = $request['external_link'];
      $link->external_link_explanation = $request['external_link_explanation'];
@@ -126,9 +128,12 @@ class PostController extends Controller
         $creator->post_id = $post->id;
         $creator->save();
 
-        $image->image_path = $request['image_path'];
+        if ($request->hasFile('image_url')) {
+        $image_url = Cloudinary::upload($request->file('image_url')->getRealPath())->getSecurePath();
+        $image->image_url = $image_url;
         $image->post_id = $post->id;
         $image->save();
+     }
 
         $link->external_link = $request['external_link'];
         $link->external_link_explanation = $request['external_link_explanation'];

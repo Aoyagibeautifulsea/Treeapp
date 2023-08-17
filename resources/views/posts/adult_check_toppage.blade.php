@@ -49,7 +49,6 @@
 
  <!--<div class='text-center'>-->
 @forelse ($posts as $post)
-       @if ($post->age_limit == 0 || ($post->age_limit == 1 && $showAgeLimitOne))
          <div class='post'>
                 <h2 class='title'>
                      <a href="/posts/{{ $post->id }}">{{ $post->title }}></a>
@@ -85,7 +84,6 @@
         </form>
             </div>
              </div>
-            @endif
             @empty
             <p>作品がありません</p>
             @endforelse
@@ -94,7 +92,6 @@
  <div class="related-posts">
      <p>お気に入りタグに登録したタグを含む作品</p>
     @foreach ($relatedPosts as $post)
-    @if ($post->age_limit == 0 || ($post->age_limit == 1 && $showAgeLimitOne))
     <div class='post'>
                 <h2 class='title'>
                      <a href="/posts/{{ $post->id }}">{{ $post->title }}></a>
@@ -129,8 +126,6 @@
             </button>
         </form>
             </div>
-              @endif
-             
               @endforeach
 </div>
 @endauth
