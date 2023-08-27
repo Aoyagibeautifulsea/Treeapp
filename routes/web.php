@@ -20,6 +20,7 @@ use App\Http\Controllers\WishListController;
 
 // <--toppage-->
 Route::get('/',  [ToppageController::class, 'toppage'])->name('toppage');
+Route::get('explanations/howtouse',[ToppageController::class, 'showexplanation'])->name('howtouse');
 
 Route::middleware('auth')->group(function () {
     // <--create-->
@@ -30,10 +31,9 @@ Route::middleware('auth')->group(function () {
     // <search_source_story>
     Route::get('/posts/{post}/search_source_story', [PostController::class, 'searchSourceStory'])->name('search_source_story');
     Route::post('/posts/{post}/search_source_story', [PostController::class, 'addsourceStory'])->name('source_story.add');
-    // Route::post('/add/{post}', [PostController::class, 'addsourcestory'])->name('source_story.add');
     // <search_inspired_by_story>
-    Route::get('/posts/search_inspired_by_story', [PostController::class, 'searchinspiredbystory'])->name('search_inspiredby_story');
-    Route::post('/add/{post}', [PostController::class, 'addinspiredbystory'])->name('inspired_by_story.add');
+    Route::get('/posts/{post}/search_inspired_by_story', [PostController::class, 'searchinspiredbystory'])->name('search_inspiredby_story');
+    Route::post('/posts/{post}/search_inspired_by_story', [PostController::class, 'addinspiredbystory'])->name('inspired_by_story.add');
     //< wish_list>
     Route::post('/posts/{id}/wish_list', [WishListController::class, 'operateWishList'])->name('Wish_list');
     Route::get('/reads/wish_list', [WishListController::class, 'viewWishList'])->name('wish_list.view');

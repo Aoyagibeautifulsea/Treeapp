@@ -11,40 +11,39 @@ class Post extends Model
     
     protected $fillable = ['title', 'released_date', 'age_limit', 'ai_generate_check','explanation'];
     
-    // <--toppage関連-->
-    public function gettoppage(int $limit_count = 20)
-{
-    return $this::with('category')->orderBy('updated_at', 'DESC')->paginate($limit_count);
-}
 //  <--リレーション-->
     public function user()
-{
-    return $this->belongsTo(User::class);
-}
+    {
+        return $this->belongsTo(User::class);
+    }
     public function creators()
-{
-    return $this->hasMany(Creator::class);
-}
+    {
+        return $this->hasMany(Creator::class);
+    }
     public function comments()
-{
-    return $this->hasMany(Comment::class);
-}
+    {
+        return $this->hasMany(Comment::class);
+    }
     public function images()
-{
-    return $this->hasMany(Image::class);
-}
+    {
+        return $this->hasMany(Image::class);
+    }
     public function links()
-{
-    return $this->hasMany(Link::class);
-}
-   public function sourcestory()
-{
-    return $this->hasMany(Source_story::class);
-}
+    {
+        return $this->hasMany(Link::class);
+    }
+   public function sourcestories()
+    {
+        return $this->belongsToMany(Post::class, 'source_stories', 'post_id', 'senior_post_id');
+    }
+    public function inspiredbystories()
+    {
+        return $this->belongsToMany(Post::class, 'inspired_by_stories', 'post_id', 'junior_post_id');
+    }
     public function tags()
-{
-        return $this->belongsToMany(Tag::class, 'post_tag', 'post_id', 'tag_id');
-}
+    {
+            return $this->belongsToMany(Tag::class, 'post_tag', 'post_id', 'tag_id');
+    }
     public function favoritedBy()
     {
         return $this->belongsToMany(User::class, 'favorites', 'post_id', 'user_id')->withTimestamps();
