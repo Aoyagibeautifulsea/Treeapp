@@ -12,7 +12,7 @@ class link extends Model
     protected $fillable = ['external_link', 'external_link_explanation'];
     
     public function post()   
-{
-    return $this->belongsTo(Post::class);  
-}
+    {
+        return $this->belongsTo(Post::class);  
+    }
 }

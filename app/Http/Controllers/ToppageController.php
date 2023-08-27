@@ -18,8 +18,7 @@ public function toppage(Request $request)
         $author_Keyword = $request->input('author_keyword');
         $startYear = $request->input('start_year');
         $endYear = $request->input('end_year');
-        $selectedTags = $request->input('tags');
-        $selectedTags = [];
+        $selectedTags = $request->input('tags_array', []);
         $user = Auth::user();
         
         $showAgeLimitOne = $request->input('show_age_limit_one', false);
@@ -36,7 +35,7 @@ public function toppage(Request $request)
         // 作者名での検索
         if ($request->input('search_type') === 'author') {
             if (!empty($author_Keyword)) {
-                $query->whereHas('creator', function ($q) use ($author_Keyword) {
+                $query->whereHas('creators', function ($q) use ($author_Keyword) {
                     $q->where('name', 'LIKE', "%{$author_Keyword}%");
                 });
             }
@@ -56,10 +55,17 @@ public function toppage(Request $request)
         });
         }
         $tags = Tag::all();
-
-        $posts = $query->get();
-       
-        // $user = Auth::user(); // ログイン中のユーザーを取得する方法に変更
+        
+        $postorder = $request->input('sort_order', 'newest', 'oldest');
+        
+        if ($postorder === 'oldest') {
+        $query->orderBy('released_date', 'asc'); // 古い順
+        } else {
+        $query->orderBy('released_date', 'desc'); // デフォルトは新しい順
+        }
+        
+        $posts = $query->paginate(8);
+        // $tagposts = $query->paginate(4);
         
         if ($user && $user->favoritetag) {
         $tagIds = $user->favoritetag->pluck('id')->toArray();
@@ -75,10 +81,17 @@ public function toppage(Request $request)
         $relatedPosts = collect();
     }
     
+    
     if (auth()->check() && $user->adult_check === 1) {
         return view('posts.adult_check_toppage', compact('posts', 'keyword', 'title_Keyword', 'author_Keyword', 'startYear', 'endYear','tags', 'selectedTags','relatedPosts','showAgeLimitOne'));
     } else {
         return view('posts.toppage', compact('posts', 'keyword', 'title_Keyword', 'author_Keyword', 'startYear', 'endYear','tags', 'selectedTags','relatedPosts','showAgeLimitOne'));
     }
     }
+    
+    public function showexplanation()
+    {
+        return view('explanations.howtouse');
+    }
+        
 }

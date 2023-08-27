@@ -12,7 +12,7 @@ class image extends Model
     protected $fillable = ['image_url'];
     
     public function post()   
-{
-    return $this->belongsTo(Post::class);  
-}
+    {
+        return $this->belongsTo(Post::class);  
+    }
 }

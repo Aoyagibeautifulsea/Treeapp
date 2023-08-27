@@ -12,7 +12,7 @@ class creator extends Model
     protected $fillable = ['name'];
     
     public function post()   
-{
-    return $this->belongsTo(Post::class);  
-}
+    {
+        return $this->belongsTo(Post::class);  
+    }
 }

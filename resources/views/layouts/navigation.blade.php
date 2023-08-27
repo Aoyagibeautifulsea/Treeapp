@@ -22,24 +22,25 @@
                      <x-nav-link :href="route('showmypage')" :active="request()->routeIs('showmypage')">
                         {{ __('マイページ') }}
                     </x-nav-link>
-                    <div class="col-md-8 offset-md-4">
+                    <x-nav-link :href="route('howtouse')" :active="request()->routeIs('howtouse')">
+                        {{ __('このサイトの使い方') }}
+                    </x-nav-link> 
+                    <div class=" p-4">
                     @auth
                     <!-- ログインしている場合のコンテンツ（ログアウトボタン） -->
                     <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                    <x-nav-link :href="route('logout')"
-                        onclick="event.preventDefault();
-                            this.closest('form').submit();">
-                        {{ __('ログアウト') }}
-                    </x-nav-link>
+                        @csrf
+                        <x-nav-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
+                            {{ __('ログアウト') }}
+                        </x-nav-link>
+                    </form>
                     @else
-                    <!-- ログインしていない場合のコンテンツ（ログインボタン） -->
-                    <a href="{{ route('login') }}" class="btn btn-secondary" role="button">
-                        {{ __('ログイン') }}
-                    </a>
+                        <!-- ログインしていない場合のコンテンツ（ログインボタン） -->
+                        <a href="{{ route('login') }}" class="btn btn-secondary" role="button">
+                            {{ __('ログイン') }}
+                        </a>
                     @endauth
                     </div>
-                     
                 </div>
             </div>
 

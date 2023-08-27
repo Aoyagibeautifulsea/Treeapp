@@ -1,5 +1,6 @@
 <x-app-layout>
-<h1>Edit Post</h1>
+    <div class="px-6 sm:px-10 md:px-20 lg:px-28 xl:px-36 space-y-8">
+    <div class="text-2xl font-bold text-gray-800">作品を編集する</div>
 
     <form action="{{ route('posts.update', $post->id) }}" method="POST">
         @csrf
@@ -12,12 +13,13 @@
             
        <div class='creator'>
            <h2>作者</h2>
+           <div class="creator-forms flex space-x-2">
            @foreach($post->creators as $creator)
            <input type="text" name="creator_name[]"  placeholder="作者名を入力してください" value="{{ $creator->name }}"/>
            <p class="title__error" style="color:rd">{{ $errors->first('name') }}</p>
            @endforeach
-                  
-            </div>
+            </div>      
+        </div>
             <div clsss='released_date'>
                 <h3>作品が発表された年</h3>
                 <input type="number" name="post[released_date]" min="1" max="9999" step="1" placeholder="作品が発表された年を半角数字で入力してください" value="{{ $post->released_date}}"/>
@@ -38,7 +40,7 @@
     @else
         @foreach ($post->links as $link)
             <input type="text" name="external_link[]" placeholder="作品に関するリンクを入力してください（任意）" value="{{ $link->external_link }}"/>
-            <p class="title__error" style="color:red">{{ $errors->first('external_link.$index') }}</p>
+            <p class="title__error" style="color:red">{{ $errors->first('external_link') }}</p>
         @endforeach
     @endif
 </div>
@@ -51,7 +53,7 @@
     @else
         @foreach ($post->links as $link)
             <input type="text" name="external_link_explanation[]" placeholder="リンクの解説を入力してください（任意）" value="{{ $link->external_link_explanation}}"/>
-            <p class="title__error" style="color:red">{{ $errors->first('external_link_explanation.$index') }}</p>
+            <p class="title__error" style="color:red">{{ $errors->first('external_link_explanation') }}</p>
         @endforeach
     @endif
 </div>
@@ -79,11 +81,7 @@
                 <h9>成人向け作品の場合はチェックを入れてください</h9>
                 <input type="checkbox" name="post[age_limit]" value=true @if(old('post.age_limit')) checked @endif />
             </div>
-            
-            <div class='ai_generate_check'>
-                <h10>AI生成の作品の場合はチェックを入れてください</h10>
-                <input type="checkbox" name="post[ai_generate_check]" value=true  @if(old('post.ai_generate_check')) checked @endif />
-            </div>
-             <button type="submit">Update Post</button>
+             <button type="submit" class="bg-gray-500 hover:bg-gray-600 focus:outline-none text-white py-2 px-4 rounded-full">更新する</button>
     </form>
-    </x-app-layout>
+    </div>
+</x-app-layout>

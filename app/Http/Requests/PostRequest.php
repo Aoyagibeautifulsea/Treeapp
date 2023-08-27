@@ -24,13 +24,14 @@ class PostRequest extends FormRequest
     public function rules()
     {
         return 
-        ['post.title' => 'required|string|max:100|unique:posts,title',
+        [
+         'post.title' => 'required|string|max:100',
          'post.released_date' => 'required|regex:/^[0-9]+$/',
          'post.released_date' => 'required|regex:/^\d{1,4}$/',
-         'name.0' => 'required|string|max:100', // 一つ目の名前フィールドは必須
+         'name' => 'min:1', // 一つ目の名前フィールドは必須
          'name.*' => 'nullable|string|max:100', // 他の名前フィールドは任意
          'post.explanation' => 'required|string|max:300',
-         'image_url' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+         'image_url' => 'image|mimes:jpeg,png,jpg,gif|max:2048|nullable',
          'external_link.*' => 'nullable|url',
          'external_link_explanation.*' => 'nullable|string|max:150',
          

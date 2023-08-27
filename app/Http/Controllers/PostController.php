@@ -30,26 +30,25 @@ class PostController extends Controller
         
         foreach ($post->tags as $tag) {
             $tag->relatedPosts = $tag->posts->where('id', '<>', $post->id)->shuffle();
-        }
+    }
+    
         
     return view('posts.show', compact('post', 'tags','post_id', 'comments'));
     }
     public function storecomment(Request $request, Post $post, Comment $comment)
-{
-    // バリデーション?
-
+    {
     $comment->post_id = $request->post_id;
     $comment->user_id = auth()->id();
     $comment->body = $request->body;
     $comment->save();
 
     return back();
-}
+    }
    public function deletecomment(Comment $comment)
-{
+    {
     $comment->delete();
     return back();
-}
+    }
     
     // <--投稿制作create-->
      public function create()
@@ -121,7 +120,7 @@ class PostController extends Controller
         return view('posts.edit', compact('post','tags'));
     }
 
-    public function update(Request $request, Post $post, Creator $creator,Image $image, Link $link)
+    public function update(PostRequest $request, Post $post, Creator $creator,Image $image, Link $link)
     {
         // 既存の関連データを削除
         $post->creators()->delete();
@@ -143,14 +142,14 @@ class PostController extends Controller
 
         $creatorNames = $request->input('creator_name', []); // 著者名の配列を取得
 
-foreach ($creatorNames as $index => $creatorName) {
-    if (!empty($creatorName)) { // 空の著者名は保存しない
+        foreach ($creatorNames as $index => $creatorName) {
+        if (!empty($creatorName)) { // 空の著者名は保存しない
         $creatorInstance = new Creator();
         $creatorInstance->name = $creatorName;
         $creatorInstance->post_id = $post->id;
         $creatorInstance->save();
     }
-}
+    }
      
      if ($request->hasFile('image_url')) {
      $image_url = Cloudinary::upload($request->file('image_url')->getRealPath())->getSecurePath();
@@ -214,22 +213,15 @@ foreach ($creatorNames as $index => $creatorName) {
 
         return redirect()->back();
     }
-    
-//     public function show(Post $post)
-// {
-//     return view('posts.show')->with(['post' => $post]);
-// }
-
 //     <--親作品sourcestory-->
     public function searchSourceStory(Request $request)
-{
+    {
         $keyword = $request->input('keyword');
         $title_Keyword =$request->input('title_keyword');
         $author_Keyword = $request->input('author_keyword');
         $startYear = $request->input('start_year');
         $endYear = $request->input('end_year');
-        $selectedTags = $request->input('tags');
-        $selectedTags = [];
+        $selectedTags = $request->input('tags_array', []);
         $post_id = $request->input('post_id');
         $query = Post::query();
 
@@ -243,7 +235,7 @@ foreach ($creatorNames as $index => $creatorName) {
         // 作者名での検索
         if ($request->input('search_type') === 'author') {
             if (!empty($author_Keyword)) {
-                $query->whereHas('creator', function ($q) use ($author_Keyword) {
+                $query->whereHas('creators', function ($q) use ($author_Keyword) {
                     $q->where('name', 'LIKE', "%{$author_Keyword}%");
                 });
             }
@@ -263,31 +255,37 @@ foreach ($creatorNames as $index => $creatorName) {
         });
         }
         $tags = Tag::all();
+        $postorder = $request->input('sort_order', 'newest', 'oldest');
+        
+        if ($postorder === 'oldest') {
+        $query->orderBy('released_date', 'asc'); // 古い順
+        } else {
+        $query->orderBy('released_date', 'desc'); // デフォルトは新しい順
+        }
+        $posts = $query->paginate(8);
 
-        $posts = $query->get();
     return view('posts.search_source_story', compact('posts', 'keyword', 'title_Keyword', 'author_Keyword', 'startYear', 'endYear','tags', 'selectedTags', 'post_id'));
-}
+    }
     public function addsourcestory(Request $request, Post $post, Source_story $sourceStory)
-{
+    {
         $sourceStory->senior_post_id = $request['senior_post_id'];
         $sourceStory->post_id = $request['post_id']; 
         
         $sourceStory->save();
 
     return redirect()->route('post.show', ['post' => $post->id]);
-}
+    }
 // 　
 
 //   <--子作品inspiredbystory-->
       public function searchinspiredbystory(Request $request)
-{
-    $keyword = $request->input('keyword');
+    {
+        $keyword = $request->input('keyword');
         $title_Keyword =$request->input('title_keyword');
         $author_Keyword = $request->input('author_keyword');
         $startYear = $request->input('start_year');
         $endYear = $request->input('end_year');
-        $selectedTags = $request->input('tags');
-        $selectedTags = [];
+        $selectedTags = $request->input('tags_array', []);
         $post_id = $request->input('post_id');
         $query = Post::query();
 
@@ -301,7 +299,7 @@ foreach ($creatorNames as $index => $creatorName) {
         // 作者名での検索
         if ($request->input('search_type') === 'author') {
             if (!empty($author_Keyword)) {
-                $query->whereHas('creator', function ($q) use ($author_Keyword) {
+                $query->whereHas('creators', function ($q) use ($author_Keyword) {
                     $q->where('name', 'LIKE', "%{$author_Keyword}%");
                 });
             }
@@ -321,20 +319,25 @@ foreach ($creatorNames as $index => $creatorName) {
         });
         }
         $tags = Tag::all();
-
-        $posts = $query->get();
+        $postorder = $request->input('sort_order', 'newest', 'oldest');
+        
+        if ($postorder === 'oldest') {
+        $query->orderBy('released_date', 'asc'); // 古い順
+        } else {
+        $query->orderBy('released_date', 'desc'); // デフォルトは新しい順
+        }
+        $posts = $query->paginate(8);
     return view('posts.search_inspired_by_story', compact('posts', 'keyword', 'title_Keyword', 'author_Keyword', 'startYear', 'endYear','tags', 'selectedTags','post_id'));
-}
+    }
      public function addinspiredbystory(Request $request, Post $post, Inspired_by_story $inspiredbyStory)
-{
-    $inspiredbyStory = new Source_story();
-        $inspiredbyStory->senior_post_id = $post->id; // 投稿のIDを関連付ける
-        $inspiredbyStory->post_id = $post->id; // ソースストーリーに対する投稿のIDを関連付ける
+    {
+        $inspiredbyStory->junior_post_id = $request['junior_post_id'];
+        $inspiredbyStory->post_id = $request['post_id']; 
 
         $inspiredbyStory->save();
 
     return redirect()->route('post.show', ['post' => $post->id]);
-}
+    }
 
 
 }

@@ -77,13 +77,15 @@ class MypageController extends Controller
     {
         // ログインしているユーザーのIDを取得
         $userId = auth()->id();
-
+        $query = Post::query();
+        
         // ユーザーの投稿を取得
         $user = User::with('posts')->find($userId);
         // ログインユーザーのいいねした投稿を取得
         $likedPosts = $user->favoritePosts;
         
         $tags = Tag::all();
+        
 
         return view('mypages.mypage', compact('user', 'tags', 'likedPosts'));
     }
