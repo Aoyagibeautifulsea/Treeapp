@@ -48,14 +48,16 @@
             @endif
         </div>
         
-        <div class="googleloginbutton">
+        <div class="googleloginbutton mt-4 mb-4">
+            <x-primary-button class="ml-3">
         <a href="/login/google" class="btn btn-secondary" role="button">
             Googleアカウントを使ってログイン
+            </x-primary-button>
         </a>
        　</div>
 
             <x-primary-button class="ml-3">
-                {{ __('Log in') }}
+                {{ __('ログイン') }}
             </x-primary-button>
         </div>
         
