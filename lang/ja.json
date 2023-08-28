@@ -1,0 +1,31 @@
+{
+    "Home" : "ホーム",
+    "Login" : "ログイン",
+    "Register" : "新しく登録する",
+    "Logout" : "ログアウト",
+    "Quit" : "退会",
+
+
+    "Name" : "お名前",
+    "Email" : "メールアドレス",
+    "Password" : "パスワード",
+    "Confirm Password" : "パスワード(確認)",
+    "Remember me" : "記憶する",
+    "Forgot your password?" : "パスワードをお忘れの場合はここをクリック",
+    "Already registered?" : "すでに登録されてる方はこちら",
+    
+    "Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one." : "パスワードをお忘れですか？現在のメールアドレスを入力いただければ、新しいパスワードを選択できるパスワードリセットリンクをメールでお送りします。",
+
+    "Verify Your Email Address" : "認証メールの送信",
+    "A fresh verification link has been sent to your email address." : "認証メールを再送しました。受信トレイをご確認下さい。",
+    "Before proceeding, please check your email for a verification link." : "登録メールアドレス宛に認証用のリンクを記載したメールを送りました。本登録を完了させるために、メール内のリンクをクリックして下さい。",
+    "If you did not receive the email" : "もし、メールが届いていない場合は",
+    "click here to request another" : "ここをクリックすると認証メールを再送できます。",
+    
+
+    "Reset Password" : "パスワードの再設定",
+    "Send Password Reset Link" : "再設定用のリンクを記載したメールを送信",
+
+
+    "Please confirm your password before continuing." : "手続きを進める前にパスワードを入力して下さい。"
+}

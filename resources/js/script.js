@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    console.log("Hello");
     // 初期表示では作品名検索フォームを表示する
     $("#authorSearchForm, #yearSearchForm, #tagSearchForm").hide();
 
