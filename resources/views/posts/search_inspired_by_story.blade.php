@@ -1,7 +1,7 @@
 <x-app-layout>
 <div class="px-6 sm:px-10 md:px-20 lg:px-28 xl:px-36 space-y-8">
     @auth
-    <div class="text-2xl font-bold text-gray-800"> 子作品を探す </div>
+        <div class="text-2xl font-bold text-gray-800"> 子作品を探す </div>
     @endauth
     
     <div class='search bg-gray-100 p-4 rounded-md shadow-md'>
@@ -20,26 +20,26 @@
     
             <!-- 作品名検索フォーム -->
             <div id="titleSearchForm" style="display: none;">
-                <input type="text" name="title_keyword" value="{{ $title_Keyword }}" placeholder="作品名を入力">
+                <input type="text" name="title_keyword" value="{{ $title_keyword }}" placeholder="作品名を入力">
             </div>
     
             <!-- 作者名検索フォーム -->
             <div id="authorSearchForm" style="display: none;">
-                <input type="text" name="author_keyword" value="{{ $author_Keyword }}" placeholder="作者名を入力">
+                <input type="text" name="author_keyword" value="{{ $author_keyword }}" placeholder="作者名を入力">
             </div>
     
             <!-- 年代検索フォーム -->
             <div id="yearSearchForm" style="display: none;">
-                <input type="text" name="start_year" value="{{ $startYear }}" placeholder="起点となる年">
-                <input type="text" name="end_year" value="{{ $endYear }}" placeholder="終点となる年">
+                <input type="text" name="start_year" value="{{ $start_year }}" placeholder="起点となる年">
+                <input type="text" name="end_year" value="{{ $end_year }}" placeholder="終点となる年">
             </div>
             <!-- タグ検索フォーム -->
              <div id="tagSearchForm" style="display: none;">
-                @foreach ($tags->groupBy('category') as $category => $groupedTags)
+                @foreach ($tags->groupBy('category') as $category => $grouped_tags)
                     <h2>{{ $category }}</h2>
-                    @foreach ($groupedTags as $tag)
+                    @foreach ($grouped_tags as $tag)
                         <label>
-                            <input type="checkbox" name="tags_array[]" value="{{ $tag->id }}" @if(in_array($tag->id, $selectedTags)) checked @endif>
+                            <input type="checkbox" name="tags_array[]" value="{{ $tag->id }}" @if(in_array($tag->id, $selected_tags)) checked @endif>
                             {{ $tag->name }}
                         </label>
                     @endforeach
@@ -62,37 +62,37 @@
      
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         @forelse ($posts as $post)
-        <div class="bg-white border border-gray-300 shadow-md rounded-md p-4">
-            <div class='post'>
-                <h2 class='title text-lg'>
-                    作品名：　<a href="/posts/{{ $post->id }}" class="text-gray-800 hover:underline">{{ $post->title }}</a>
-                </h2>
-            </div>
-            <div class='creator mt-2'>
-                <h3 class='creator text-gray-600'>
-                    作者名：
-                    @foreach($post->creators as $creator)
-                 　<a href="/posts/{{ $creator->id }}" class="text-gray-800 hover:underline">{{ $creator->name }}</a>
-                    @endforeach
-                </h3>
-            </div>   
-            <div class='buttons flex space-x-2 mt-4'>        
-                <div class='add_button'>
-                    <form action="{{ route('inspired_by_story.add', $post->id) }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="junior_post_id" value="{{ $post->id }}">
-                    <input type="hidden" name="post_id" value="{{ $post_id }}">
-                    <button type="submit" class="bg-gray-500 hover:bg-gray-600 focus:outline-none text-white py-2 px-4 rounded-full">子作品としてこの作品を追加する</button>
-                    </form>
+            <div class="bg-white border border-gray-300 shadow-md rounded-md p-4">
+                <div class='post'>
+                    <h2 class='title text-lg'>
+                        作品名：　<a href="/posts/{{ $post->id }}" class="text-gray-800 hover:underline">{{ $post->title }}</a>
+                    </h2>
+                </div>
+                <div class='creator mt-2'>
+                    <h3 class='creator text-gray-600'>
+                        作者名：
+                        @foreach($post->creators as $creator)
+                     　     <a href="/posts/{{ $creator->id }}" class="text-gray-800 hover:underline">{{ $creator->name }}</a>
+                        @endforeach
+                    </h3>
+                </div>   
+                <div class='buttons flex space-x-2 mt-4'>        
+                    <div class='add_button'>
+                        <form action="{{ route('inspired_by_story.add', $post->id) }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="junior_post_id" value="{{ $post->id }}">
+                        <input type="hidden" name="post_id" value="{{ $post_id }}">
+                        <button type="submit" class="bg-gray-500 hover:bg-gray-600 focus:outline-none text-white py-2 px-4 rounded-full">子作品としてこの作品を追加する</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
         @empty
-        <div class="text-gray-600">作品がありません</div>
+            <div class="text-gray-600">作品がありません</div>
         @endforelse
     </div>    
     <div class="flex items-center justify-center mt-6">
-     {{$posts -> links('vendor.pagination.tailwind')}}
+        {{$posts -> links('vendor.pagination.tailwind')}}
     </div>
 </div>
 </x-app-layout>

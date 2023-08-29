@@ -14,11 +14,12 @@ use Illuminate\View\View;
 
 class MypageController extends Controller
 {
-    public function updatepassword()
+    public function updatePassword()
     {
-        return view('profile.partials.update-password-form');
+        return view('profile.partials.editpassword');
     }
-    public function deleteuser()
+    
+    public function deleteUser()
     {
         return view('profile.partials.delete-user-form');
     }
@@ -29,29 +30,29 @@ class MypageController extends Controller
             'user' => $request->user(),
         ]);
     }
-
+    
     /**
      * Update the user's profile information.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
-{
-    $validatedData = $request->validated();
-
-    // Update the user's profile information
-    $user = $request->user();
-    $user->fill($validatedData);
-
-    // Check if the adult_check checkbox was submitted and update the value accordingly
-    $user->adult_check = $request->has('adult_check');
-
-    if ($user->isDirty('email')) {
-        $user->email_verified_at = null;
+    {
+        $validated_data = $request->validated();
+    
+        // Update the user's profile information
+        $user = $request->user();
+        $user->fill($validated_data);
+    
+        // Check if the adult_check checkbox was submitted and update the value accordingly
+        $user->adult_check = $request->has('adult_check');
+    
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+    
+        $user->save();
+    
+        return back()->with('status', 'profile-updated');
     }
-
-    $user->save();
-
-    return back()->with('status', 'profile-updated');
-}
 
     /**
      * Delete the user's account.
@@ -73,37 +74,37 @@ class MypageController extends Controller
 
         return Redirect::to('/');
     }
-     public function showmypage()
+    
+    public function showMypage()
     {
         // ログインしているユーザーのIDを取得
-        $userId = auth()->id();
+        $user_id = auth()->id();
         $query = Post::query();
         
         // ユーザーの投稿を取得
-        $user = User::with('posts')->find($userId);
+        $user = User::with('posts')->find($user_id);
         // ログインユーザーのいいねした投稿を取得
-        $likedPosts = $user->favoritePosts;
+        $liked_posts = $user->favoritePosts;
         
         $tags = Tag::all();
         
-
-        return view('mypages.mypage', compact('user', 'tags', 'likedPosts'));
+        return view('mypages.mypage', compact('user', 'tags', 'liked_posts'));
     }
     
-     public function favoritetagstore(Request $request)
+    public function favoriteTagStore(Request $request)
     {
-    $user = Auth::user(); // ログイン中のユーザーを取得する
-    $tagsArray = $request->input('tags_array', []);
-
-    // 既存のお気に入りタグを削除
-    $user->favoritetag()->detach();
-
-    // 新しいお気に入りタグを登録
-    foreach ($tagsArray as $tagId) {
-        $user->favoritetag()->attach($tagId);
-    }
-
-    return redirect()->back()->with('success', 'お気に入りタグが保存されました。');
+        $user = Auth::user(); // ログイン中のユーザーを取得する
+        $tags_array = $request->input('tags_array', []);
+    
+        // 既存のお気に入りタグを削除
+        $user->favoritetag()->detach();
+    
+        // 新しいお気に入りタグを登録
+        foreach ($tags_array as $tag_id) {
+            $user->favoritetag()->attach($tag_id);
+        }
+    
+        return redirect()->back()->with('success', 'お気に入りタグが保存されました。');
     }
     
 }

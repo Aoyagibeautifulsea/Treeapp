@@ -11,17 +11,17 @@ use App\Models\Tag;
 class ToppageController extends Controller
 {
     // <--最新投稿表示-->
-public function toppage(Request $request)
+    public function toppage(Request $request)
     {
         $keyword = $request->input('keyword');
-        $title_Keyword =$request->input('title_keyword');
-        $author_Keyword = $request->input('author_keyword');
-        $startYear = $request->input('start_year');
-        $endYear = $request->input('end_year');
-        $selectedTags = $request->input('tags_array', []);
+        $title_keyword =$request->input('title_keyword');
+        $author_keyword = $request->input('author_keyword');
+        $start_year = $request->input('start_year');
+        $end_year = $request->input('end_year');
+        $selected_tags = $request->input('tags_array', []);
         $user = Auth::user();
         
-        $showAgeLimitOne = $request->input('show_age_limit_one', false);
+        $show_agelimit = $request->input('show_age_limit_one', false);
         
         $query = Post::query();
 
@@ -34,31 +34,31 @@ public function toppage(Request $request)
 
         // 作者名での検索
         if ($request->input('search_type') === 'author') {
-            if (!empty($author_Keyword)) {
-                $query->whereHas('creators', function ($q) use ($author_Keyword) {
-                    $q->where('name', 'LIKE', "%{$author_Keyword}%");
+            if (!empty($author_keyword)) {
+                $query->whereHas('creators', function ($q) use ($author_keyword) {
+                    $q->where('name', 'LIKE', "%{$author_keyword}%");
                 });
             }
         }
 
         // 年代での検索
         if ($request->input('search_type') === 'year') {
-            if (!empty($startYear) && !empty($endYear)) {
-                $query->whereBetween('released_date', [$startYear, $endYear]);
+            if (!empty($start_year) && !empty($end_year)) {
+                $query->whereBetween('released_date', [$start_year, $end_year]);
             }
         }
         // タグでの検索
-         if ($request->input('search_type') === 'tag' && !empty($selectedTags)) {
+         if ($request->input('search_type') === 'tag' && !empty($selected_tags)) {
         // $selectedTagsが空でない場合にのみ検索条件を追加
-        $query->whereHas('tags', function ($q) use ($selectedTags) {
-            $q->whereIn('id', $selectedTags);
+        $query->whereHas('tags', function ($q) use ($selected_tags) {
+            $q->whereIn('id', $selected_tags);
         });
         }
         $tags = Tag::all();
         
-        $postorder = $request->input('sort_order', 'newest', 'oldest');
+        $post_order = $request->input('sort_order', 'newest', 'oldest');
         
-        if ($postorder === 'oldest') {
+        if ($post_order === 'oldest') {
         $query->orderBy('released_date', 'asc'); // 古い順
         } else {
         $query->orderBy('released_date', 'desc'); // デフォルトは新しい順
@@ -68,28 +68,28 @@ public function toppage(Request $request)
         // $tagposts = $query->paginate(4);
         
         if ($user && $user->favoritetag) {
-        $tagIds = $user->favoritetag->pluck('id')->toArray();
+        $tag_ids = $user->favoritetag->pluck('id')->toArray();
 
-        $relatedPosts = Post::whereHas('tags', function ($q) use ($tagIds) {
-        $q->whereIn('id', $tagIds);
+        $related_posts = Post::whereHas('tags', function ($q) use ($tag_ids) {
+        $q->whereIn('id', $tag_ids);
         })
             ->where('user_id', '!=', $user->id)
             ->inRandomOrder()
-            ->limit(10)
+            ->limit(8)
             ->get();
-    } else {
-        $relatedPosts = collect();
-    }
+        } else {
+        $related_posts = collect();
+        }
     
     
-    if (auth()->check() && $user->adult_check === 1) {
-        return view('posts.adult_check_toppage', compact('posts', 'keyword', 'title_Keyword', 'author_Keyword', 'startYear', 'endYear','tags', 'selectedTags','relatedPosts','showAgeLimitOne'));
-    } else {
-        return view('posts.toppage', compact('posts', 'keyword', 'title_Keyword', 'author_Keyword', 'startYear', 'endYear','tags', 'selectedTags','relatedPosts','showAgeLimitOne'));
-    }
+        if (auth()->check() && $user->adult_check === 1) {
+            return view('posts.adult_check_toppage', compact('posts', 'keyword', 'title_keyword', 'author_keyword', 'start_year', 'end_year','tags', 'selected_tags','related_posts','show_agelimit'));
+        } else {
+            return view('posts.toppage', compact('posts', 'keyword', 'title_keyword', 'author_keyword', 'start_year', 'end_year','tags', 'selected_tags','related_posts','show_agelimit'));
+        }
     }
     
-    public function showexplanation()
+    public function showExplanation()
     {
         return view('explanations.howtouse');
     }

@@ -1,98 +1,101 @@
 <x-app-layout>
     <div class="px-6 sm:px-10 md:px-20 lg:px-28 xl:px-36 space-y-8">
-    <div class="text-2xl font-bold text-gray-800"> 作品を投稿する </div>
+        <div class="text-2xl font-bold text-gray-800"> 作品を投稿する </div>
         <form action="{{ route('create_post') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <div class="title">
-                <h1 class="text-lg font-semibold">作品タイトル</h1>
-                <input type="text" name="post[title]" placeholder="作品名を入力してください" value="{{ old('post.title') }}" class="w-full px-3 py-2 border rounded-lg"/>
-                  <p class="title__error" style="color:red">{{ $errors->first('post.title') }}</p>
-            </div>
-            
-    <div class='creator'>
-    <h2 class="text-lg font-semibold">作者</h2>
-    <div class="creator-forms flex space-x-2">
-        <div class="creator-form">
-            <input type="text" name="name[]" placeholder="作者名を入力してください" value="{{ old('name.0') }}" required />
-            <p class="title__error" style="color:red">{{ $errors->first('name') }}</p>
+        @csrf
+        
+        <div class="title">
+            <h1 class="text-lg font-semibold">作品タイトル</h1>
+            <input type="text" name="post[title]" placeholder="作品名を入力してください" value="{{ old('post.title') }}" class="w-full px-3 py-2 border rounded-lg"/>
+            <p class="title__error" style="color:red">{{ $errors->first('post.title') }}</p>
         </div>
-        <div class="creator-form">
-            <input type="text" name="name[]" placeholder="作者名を入力してください" value="{{ old('name.1') }}" />
-            <p class="title__error" style="color:red">{{ $errors->first('name.1') }}</p>
-        </div>
-        <div class="creator-form">
-            <input type="text" name="name[]" placeholder="作者名を入力してください" value="{{ old('name.2') }}" />
-            <p class="title__error" style="color:red">{{ $errors->first('name.2') }}</p>
-        </div>
-    </div>
-    </div>
-            <div clsss='released_date'>
-                <h3 class="text-lg font-semibold">作品が発表された年</h3>
-                <input type="number" name="post[released_date]" min="1" max="9999" step="1" placeholder="作品が発表された年を半角数字で入力してください" value="{{ old('post.released_date') }}"/>
-                  <p class="title__error" style="color:red">{{ $errors->first('post.released_date') }}</p>
-            </div>
             
-            <div class='comment'>
-                <h4 class="text-lg font-semibold">作品解説</h4>
-                <textarea name="post[explanation]" rows="4" class="w-full px-3 py-2 border rounded-lg" placeholder="作品に関するコメントを入力してください">{{ old('post.explanation') }}</textarea>
-                  <p class="title__error" style="color:red">{{ $errors->first('post.explanation') }}</p>
+        <div class='creator'>
+            <h2 class="text-lg font-semibold">作者</h2>
+            <div class="creator-forms flex space-x-2">
+                <div class="creator-form">
+                    <input type="text" name="name[]" placeholder="作者名を入力してください" value="{{ old('name.0') }}" required />
+                    <p class="title__error" style="color:red">{{ $errors->first('name') }}</p>
+                </div>
+                <div class="creator-form">
+                    <input type="text" name="name[]" placeholder="作者名を入力してください" value="{{ old('name.1') }}" />
+                    <p class="title__error" style="color:red">{{ $errors->first('name.1') }}</p>
+                </div>
+                <div class="creator-form">
+                    <input type="text" name="name[]" placeholder="作者名を入力してください" value="{{ old('name.2') }}" />
+                    <p class="title__error" style="color:red">{{ $errors->first('name.2') }}</p>
+                </div>
             </div>
+        </div>
+        
+        <div clsss='released_date'>
+            <h3 class="text-lg font-semibold">作品が発表された年</h3>
+            <input type="number" name="post[released_date]" min="1" max="9999" step="1" placeholder="作品が発表された年を半角数字で入力してください" value="{{ old('post.released_date') }}"/>
+            <p class="title__error" style="color:red">{{ $errors->first('post.released_date') }}</p>
+        </div>
             
-            <div class="flex space-x-8">
+        <div class='comment'>
+            <h4 class="text-lg font-semibold">作品解説</h4>
+            <textarea name="post[explanation]" rows="4" class="w-full px-3 py-2 border rounded-lg" placeholder="作品に関するコメントを入力してください">{{ old('post.explanation') }}</textarea>
+            <p class="title__error" style="color:red">{{ $errors->first('post.explanation') }}</p>
+        </div>
+            
+        <div class="flex space-x-8">
             <div class='link'>
-    <h5 class="text-lg font-semibold">外部リンク</h5>
-    <input type="text" name="external_link[]" placeholder="作品に関するリンクを入力してください（任意）" value="{{ old('external_link.0') }}"/>
-    <p class="title__error" style="color:red">{{ $errors->first('external_link.0') }}</p>
-</div>
+                <h5 class="text-lg font-semibold">外部リンク</h5>
+                <input type="text" name="external_link[]" placeholder="作品に関するリンクを入力してください（任意）" value="{{ old('external_link.0') }}"/>
+                <p class="title__error" style="color:red">{{ $errors->first('external_link.0') }}</p>
+            </div>
 
-<div class='link_explanation'>
-    <h6 class="text-lg font-semibold">リンクの解説</h6>
-    <input type="text" name="external_link_explanation[]" placeholder="リンクの解説を入力してください（任意）" value="{{ old('external_link_explanation.0') }}" class="w-full px-3 py-2 border rounded-lg" />
-    <p class="title__error" style="color:red">{{ $errors->first('external_link_explanation.0') }}</p>
-</div>
-</div>
+            <div class='link_explanation'>
+                <h6 class="text-lg font-semibold">リンクの解説</h6>
+                <input type="text" name="external_link_explanation[]" placeholder="リンクの解説を入力してください（任意）" value="{{ old('external_link_explanation.0') }}" class="w-full px-3 py-2 border rounded-lg" />
+                <p class="title__error" style="color:red">{{ $errors->first('external_link_explanation.0') }}</p>
+            </div>
+        </div>
 
-<div class="flex space-x-8">
-<div class='link'>
-    <h5>外部リンク</h5>
-    <input type="text" name="external_link[]" placeholder="作品に関するリンクを入力してください（任意）" value="{{ old('external_link.1') }}" />
-    <p class="title__error" style="color:red">{{ $errors->first('external_link.1') }}</p>
-</div>
-
-<div class='link_explanation'>
-    <h6>リンクの解説</h6>
-    <input type="text" name="external_link_explanation[]" placeholder="リンクの解説を入力してください（任意）" value="{{ old('external_link_explanation.1') }}" />
-    <p class="title__error" style="color:red">{{ $errors->first('external_link_explanation.1') }}</p>
-</div>
-</div>
-
-<div class="flex space-x-8">
-<div class='link'>
-    <h5>外部リンク</h5>
-    <input type="text" name="external_link[]" placeholder="作品に関するリンクを入力してください（任意）" value="{{ old('external_link.2') }}" />
-    <p class="title__error" style="color:red">{{ $errors->first('external_link.2') }}</p>
-</div>
-
-<div class='link_explanation'>
-    <h6>リンクの解説</h6>
-    <input type="text" name="external_link_explanation[]" placeholder="リンクの解説を入力してください（任意）" value="{{ old('external_link_explanation.2') }}" />
-    <p class="title__error" style="color:red">{{ $errors->first('external_link_explanation.2') }}</p>
-</div>
-</div>            
-             <div class='tag'>
-                <h7 class="text-lg font-semibold">タグの選択</h7>
-                   @foreach ($tags->groupBy('category') as $category => $groupedTags)
-                 <h2>{{ $category }}</h2>
-                 @foreach ($groupedTags as $tag)
-                 <label>
-                 <input type="checkbox" name="tags_array[]" value="{{ $tag->id }}" />
-                 {{ $tag->name }}
+        <div class="flex space-x-8">
+            <div class='link'>
+                <h5>外部リンク</h5>
+                <input type="text" name="external_link[]" placeholder="作品に関するリンクを入力してください（任意）" value="{{ old('external_link.1') }}" />
+                <p class="title__error" style="color:red">{{ $errors->first('external_link.1') }}</p>
+            </div>
+        
+            <div class='link_explanation'>
+                <h6>リンクの解説</h6>
+                <input type="text" name="external_link_explanation[]" placeholder="リンクの解説を入力してください（任意）" value="{{ old('external_link_explanation.1') }}" />
+                <p class="title__error" style="color:red">{{ $errors->first('external_link_explanation.1') }}</p>
+            </div>
+        </div>
+        
+        <div class="flex space-x-8">
+            <div class='link'>
+                <h5>外部リンク</h5>
+                <input type="text" name="external_link[]" placeholder="作品に関するリンクを入力してください（任意）" value="{{ old('external_link.2') }}" />
+                <p class="title__error" style="color:red">{{ $errors->first('external_link.2') }}</p>
+            </div>
+        
+            <div class='link_explanation'>
+                <h6>リンクの解説</h6>
+                <input type="text" name="external_link_explanation[]" placeholder="リンクの解説を入力してください（任意）" value="{{ old('external_link_explanation.2') }}" />
+                <p class="title__error" style="color:red">{{ $errors->first('external_link_explanation.2') }}</p>
+            </div>
+        </div> 
+        
+        <div class='tag'>
+            <h7 class="text-lg font-semibold">タグの選択</h7>
+            @foreach ($tags->groupBy('category') as $category => $grouped_tags)
+                <h2>{{ $category }}</h2>
+                @foreach ($grouped_tags as $tag)
+                <label>
+                <input type="checkbox" name="tags_array[]" value="{{ $tag->id }}" />
+                {{ $tag->name }}
                 </label>
                 @endforeach
-                @endforeach
-            </div>
+            @endforeach
+        </div>
             
-            <div class="flex flex-col space-y-2">
+        <div class="flex flex-col space-y-2">
             <div class='image'>
                 <h8 class="text-lg font-semibold">作品関連画像</h8>
             </div>
@@ -100,14 +103,14 @@
                 <input type="file" name="image_url" value="{{ old('image_url') }}"/>
                 <p class="image__error" style="color: red;">{{ $errors->first('image_url') }}</p>
             </div>
-            </div>
+        </div>
             
-            <div class='age_limit'>
-                <h9 class="text-lg font-semibold">成人向け作品の場合はチェックを入れてください</h9>
-                <input type="checkbox" name="post[age_limit]" value=true @if(old('post.age_limit')) checked @endif />
-            </div>
+        <div class='age_limit'>
+            <h9 class="text-lg font-semibold">成人向け作品の場合はチェックを入れてください</h9>
+            <input type="checkbox" name="post[age_limit]" value=true @if(old('post.age_limit')) checked @endif />
+        </div>
             
-            <button type="submit" class="bg-gray-500 hover:bg-gray-600 focus:outline-none text-white py-2 px-4 rounded-full" value="store">投稿する</button>
-            </form>
+        <button type="submit" class="bg-gray-500 hover:bg-gray-600 focus:outline-none text-white py-2 px-4 rounded-full" value="store">投稿する</button>
+        </form>
     </div>
 </x-app-layout>
