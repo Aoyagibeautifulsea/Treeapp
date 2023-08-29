@@ -2,9 +2,9 @@
     <div class="px-6 sm:px-10 md:px-20 lg:px-28 xl:px-36 space-y-8">
         <h1 class="text-2xl font-semibold">読みたいリスト</h1>
         <ul>
-            @if ($wishPosts !== null)
+            @if ($wish_posts !== null)
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    @foreach ($wishPosts as $post)
+                    @foreach ($wish_posts as $post)
                         <div class="bg-white border border-gray-300 shadow-md rounded-md p-4">
                             <div class='post'>
                                 <h2 class='title text-lg'>

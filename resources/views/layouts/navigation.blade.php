@@ -28,13 +28,13 @@
                     </x-nav-link> 
                     <div class=" p-4">
                     @auth
-                    <!-- ログインしている場合のコンテンツ（ログアウトボタン） -->
-                    <form method="POST" action="{{ route('logout') }}">
+                        <!-- ログインしている場合のコンテンツ（ログアウトボタン） -->
+                        <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <x-nav-link class="font-bold text-gray-900" :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
                             {{ __('ログアウト') }}
                         </x-nav-link>
-                    </form>
+                        </form>
                     @else
                         <!-- ログインしていない場合のコンテンツ（ログインボタン） -->
                         <a href="{{ route('login') }}" class="btn btn-secondary font-bold text-gray-900" role="button">
@@ -64,8 +64,8 @@
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
                 @auth
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
+                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
                 @endauth
             </div>
 

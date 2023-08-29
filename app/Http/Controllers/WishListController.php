@@ -8,21 +8,20 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 
-
 class WishlistController extends Controller
 {
     public function viewWishList()
     {
-        $userId = auth()->id();
+        $user_id = auth()->id();
 
-        $user = User::with('posts')->find($userId);
-        $wishPosts = $user->wishList;
+        $user = User::with('posts')->find($user_id);
+        $wish_posts = $user->wishList;
         
-        return view('reads.wish_list', compact('user','wishPosts'));
+        return view('reads.wish_list', compact('user','wish_posts'));
     }
+    
     public function operateWishList(Request $request, $id)
     {
-       
         // 済ボタンが押された際の処理
         $user = auth()->user();
         $post = Post::findOrFail($id);

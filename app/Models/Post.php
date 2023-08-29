@@ -34,7 +34,7 @@ class Post extends Model
     }
    public function sourcestories()
     {
-        return $this->belongsToMany(Post::class, 'source_stories', 'post_id', 'senior_post_id');
+        return $this->belongsToMany(self::class, 'source_stories', 'post_id', 'senior_post_id');
     }
     public function inspiredbystories()
     {
