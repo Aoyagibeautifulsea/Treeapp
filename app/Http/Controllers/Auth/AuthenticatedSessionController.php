@@ -67,7 +67,7 @@ class AuthenticatedSessionController extends Controller
         return redirect('/home');
        
     }
-    public function createUserByGoogle($gUser)
+    public function createUserByGoogle($googleUser)
     {
         $user = User::create([
             'name'     => $googleUser->name,
