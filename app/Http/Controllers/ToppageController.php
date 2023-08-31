@@ -49,8 +49,7 @@ class ToppageController extends Controller
         }
         // タグでの検索
          if ($request->input('search_type') === 'tag' && !empty($selected_tags)) {
-        // $selectedTagsが空でない場合にのみ検索条件を追加
-        $query->whereHas('tags', function ($q) use ($selected_tags) {
+            $query->whereHas('tags', function ($q) use ($selected_tags) {
             $q->whereIn('id', $selected_tags);
         });
         }
@@ -59,28 +58,27 @@ class ToppageController extends Controller
         $post_order = $request->input('sort_order', 'newest', 'oldest');
         
         if ($post_order === 'oldest') {
-        $query->orderBy('released_date', 'asc'); // 古い順
+            $query->orderBy('released_date', 'asc'); // 古い順
         } else {
-        $query->orderBy('released_date', 'desc'); // デフォルトは新しい順
+            $query->orderBy('released_date', 'desc'); // デフォルトは新しい順
         }
         
         $posts = $query->paginate(8);
-        // $tagposts = $query->paginate(4);
         
         if ($user && $user->favoritetag) {
-        $tag_ids = $user->favoritetag->pluck('id')->toArray();
-
-        $related_posts = Post::whereHas('tags', function ($q) use ($tag_ids) {
-        $q->whereIn('id', $tag_ids);
-        })
-            ->where('user_id', '!=', $user->id)
-            ->inRandomOrder()
+            $get_favorite_tag = auth()->user()->favoritetag()->pluck('tag_id')->toArray();
+            
+            // お気に入りタグに関連する作品を取得
+            $related_posts = Post::whereHas('tags', function ($query) use ($get_favorite_tag) {
+            
+            $query->whereIn('tag_id', $get_favorite_tag);
+            })->inRandomOrder()
             ->limit(8)
             ->get();
+        
         } else {
-        $related_posts = collect();
+            $related_posts = collect();
         }
-    
     
         if (auth()->check() && $user->adult_check === 1) {
             return view('posts.adult_check_toppage', compact('posts', 'keyword', 'title_keyword', 'author_keyword', 'start_year', 'end_year','tags', 'selected_tags','related_posts','show_agelimit'));

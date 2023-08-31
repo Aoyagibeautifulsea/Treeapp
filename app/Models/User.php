@@ -60,7 +60,7 @@ class User extends Authenticatable
     }
     public function favoritetag()
     {
-        return $this->belongsToMany(Post::class, 'tag_user', 'user_id', 'tag_id')->withTimestamps();
+        return $this->belongsToMany(Tag::class, 'tag_user', 'user_id', 'tag_id')->withTimestamps();
     }
      
 }

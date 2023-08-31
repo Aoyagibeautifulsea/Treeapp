@@ -6,7 +6,6 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <img src="{{ asset('images/image03.JPG') }}" width="170">
-                    
                 </div>
 
                 <!-- Navigation Links -->

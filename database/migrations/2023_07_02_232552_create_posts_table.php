@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('released_date');
             $table->string('explanation', 300)->nullable();
             $table->boolean('age_limit')->default(false);
-            $table->boolean('ai_generate_check')->default(false);
             $table->foreignId('user_id')->constrained('users');
             $table->Timestamps( );
             $table->softDeletes();

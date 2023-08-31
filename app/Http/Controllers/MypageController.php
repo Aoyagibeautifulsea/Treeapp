@@ -88,6 +88,8 @@ class MypageController extends Controller
         
         $tags = Tag::all();
         
+        $liked_posts = auth()->user()->favoritePosts()->paginate(8);
+        
         return view('mypages.mypage', compact('user', 'tags', 'liked_posts'));
     }
     

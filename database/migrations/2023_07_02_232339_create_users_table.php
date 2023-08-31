@@ -20,7 +20,6 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean('adult_check')->default(false);
-            $table->string('introduction', 150)->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
