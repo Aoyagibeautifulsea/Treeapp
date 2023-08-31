@@ -64,7 +64,7 @@ class AuthenticatedSessionController extends Controller
         }
         // ログイン処理
         \Auth::login($user, true);
-        return redirect('/home');
+        return redirect('/');
        
     }
     public function createUserByGoogle($googleUser)
