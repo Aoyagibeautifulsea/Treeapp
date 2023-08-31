@@ -9,7 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
-use App\User;
+use App\Models\User;
 use Socialite;
 
 class AuthenticatedSessionController extends Controller
@@ -52,6 +52,7 @@ class AuthenticatedSessionController extends Controller
         // Google へのリダイレクト
         return Socialite::driver('google')->redirect();
     }
+    
     public function handleGoogleLogin()
     {
         $googleUser = Socialite::driver('google')->stateless()->user();
