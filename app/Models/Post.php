@@ -38,7 +38,7 @@ class Post extends Model
     }
     public function inspiredbystories()
     {
-        return $this->belongsToMany(Post::class, 'inspired_by_stories', 'post_id', 'junior_post_id');
+        return $this->belongsToMany(self::class, 'inspired_by_stories', 'post_id', 'junior_post_id');
     }
     public function tags()
     {

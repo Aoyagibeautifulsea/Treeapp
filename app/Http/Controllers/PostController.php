@@ -69,11 +69,6 @@ class PostController extends Controller
         $post_input['age_limit'] = (boolean)
         $post_input['age_limit'];
          
-        $ai_check = $request->has('post.ai_generate_check') ? true : false;
-        $post_input['ai_generate_check'] = $ai_check;
-        $post_input['ai_generate_check'] = (boolean)
-        $post_input['ai_generate_check'];
-         
         $post->fill($post_input)->save();
          
         $creator_names = $request->input('name', []); // 著者名の配列を取得
@@ -135,41 +130,37 @@ class PostController extends Controller
         $post_input['age_limit'] = $age_check;
         $post_input['age_limit'] = (boolean) $post_input['age_limit'];
 
-        $ai_check = $request->has('post.ai_generate_check') ? true : false;
-        $post_input['ai_generate_check'] = $ai_check;
-        $post_input['ai_generate_check'] = (boolean) $post_input['ai_generate_check'];
-
         $post->fill($post_input)->save();
 
         $creator_names = $request->input('creator_name', []); // 著者名の配列を取得
 
         foreach ($creator_names as $index => $creator_name) {
-        if (!empty($creator_name)) { // 空の著者名は保存しない
-        $creator_instance = new Creator();
-        $creator_instance->name = $creator_name;
-        $creator_instance->post_id = $post->id;
-        $creator_instance->save();
+            if (!empty($creator_name)) { // 空の著者名は保存しない
+                $creator_instance = new Creator();
+                $creator_instance->name = $creator_name;
+                $creator_instance->post_id = $post->id;
+                $creator_instance->save();
             }
         }
      
         if ($request->hasFile('image_url')) {
-        $image_url = Cloudinary::upload($request->file('image_url')->getRealPath())->getSecurePath();
-        $image->image_url = $image_url;
-        $image->post_id = $post->id;
-        $image->save();
+            $image_url = Cloudinary::upload($request->file('image_url')->getRealPath())->getSecurePath();
+            $image->image_url = $image_url;
+            $image->post_id = $post->id;
+            $image->save();
         }
          
         $external_links = $request->input('external_link', []);
         $external_link_explanations = $request->input('external_link_explanation', []);
         
         if (!empty($external_links)) {
-        for ($i = 0; $i < count($external_links); $i++) {
-            if (!empty($external_links[$i])) { 
-                $link_instance = new Link();
-                $link_instance->external_link = $external_links[$i];
-                $link_instance->external_link_explanation = $external_link_explanations[$i] ?? null;
-                $link_instance->post_id = $post->id;
-                $link_instance->save();
+            for ($i = 0; $i < count($external_links); $i++) {
+                if (!empty($external_links[$i])) { 
+                    $link_instance = new Link();
+                    $link_instance->external_link = $external_links[$i];
+                    $link_instance->external_link_explanation = $external_link_explanations[$i] ?? null;
+                    $link_instance->post_id = $post->id;
+                    $link_instance->save();
                 }
             }
         }
@@ -178,7 +169,6 @@ class PostController extends Controller
         // タグを関連付ける
         $post->tags()->sync($get_tag);
         
-
         return redirect('/posts/' . $post->id);
     }
 
@@ -250,8 +240,7 @@ class PostController extends Controller
         }
         // タグでの検索
          if ($request->input('search_type') === 'tag' && !empty($selected_tags)) {
-        // $selectedTagsが空でない場合にのみ検索条件を追加
-        $query->whereHas('tags', function ($q) use ($selected_tags) {
+            $query->whereHas('tags', function ($q) use ($selected_tags) {
             $q->whereIn('id', $selected_tags);
         });
         }
@@ -259,9 +248,9 @@ class PostController extends Controller
         $post_order = $request->input('sort_order', 'newest', 'oldest');
         
         if ($post_order === 'oldest') {
-        $query->orderBy('released_date', 'asc'); // 古い順
+            $query->orderBy('released_date', 'asc'); // 古い順
         } else {
-        $query->orderBy('released_date', 'desc'); // デフォルトは新しい順
+            $query->orderBy('released_date', 'desc'); // デフォルトは新しい順
         }
         $posts = $query->paginate(8);
 
@@ -275,7 +264,7 @@ class PostController extends Controller
         
         $source_story->save();
 
-        return redirect()->route('post.show', ['post' => $post->id]);
+        return redirect()->route('post.show', ['post' => $request['post_id']]);
     }
     
 //   <--子作品inspiredbystory-->
@@ -313,9 +302,8 @@ class PostController extends Controller
             }
         }
         // タグでの検索
-         if ($request->input('search_type') === 'tag' && !empty($selected_tags)) {
-        // $selectedTagsが空でない場合にのみ検索条件を追加
-        $query->whereHas('tags', function ($q) use ($selected_tags) {
+        if ($request->input('search_type') === 'tag' && !empty($selected_tags)) {
+            $query->whereHas('tags', function ($q) use ($selected_tags) {
             $q->whereIn('id', $selected_tags);
         });
         }
@@ -323,9 +311,9 @@ class PostController extends Controller
         $post_order = $request->input('sort_order', 'newest', 'oldest');
         
         if ($post_order === 'oldest') {
-        $query->orderBy('released_date', 'asc'); // 古い順
+            $query->orderBy('released_date', 'asc'); // 古い順
         } else {
-        $query->orderBy('released_date', 'desc'); // デフォルトは新しい順
+            $query->orderBy('released_date', 'desc'); // デフォルトは新しい順
         }
         $posts = $query->paginate(8);
         
@@ -339,7 +327,7 @@ class PostController extends Controller
 
         $inspired_by_story->save();
 
-        return redirect()->route('post.show', ['post' => $post->id]);
+        return redirect()->route('post.show', ['post' => $request['post_id']]);
     }
 
 

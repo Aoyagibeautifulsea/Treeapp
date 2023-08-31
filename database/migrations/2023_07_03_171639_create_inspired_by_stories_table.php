@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('inspired_by__stories', function (Blueprint $table) {
+        Schema::create('inspired_by_stories', function (Blueprint $table) {
             $table->foreignId('post_id')->constrained('posts')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('junior_post_id');
             $table->Timestamps( );
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('inspired_by__stories');
+        Schema::dropIfExists('inspired_by_stories');
     }
 };
