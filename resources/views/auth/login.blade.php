@@ -51,7 +51,7 @@
         <div class="googleloginbutton mt-4 mb-4">
             <x-primary-button class="ml-3">
         <a href="/login/google" class="btn btn-secondary" role="button">
-            Googleアカウントを使ってログイン
+            Googleアカウントを使いログイン
             </x-primary-button>
         </a>
        　</div>
