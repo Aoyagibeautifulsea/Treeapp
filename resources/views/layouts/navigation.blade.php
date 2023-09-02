@@ -43,6 +43,64 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Hamburger -->
+            <div class="-mr-2 flex items-center sm:hidden">
+                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Responsive Navigation Menu -->
+    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+
+        <!-- Responsive Settings Options -->
+        <div class="pt-4 pb-1 border-t border-gray-200">
+            <div class="px-4">
+                @auth
+                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
+                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                @endauth
+            </div>
+
+            <div class="mt-3 space-y-1">
+                <x-responsive-nav-link class="font-bold text-gray-900" :href="route('toppage')" :active="request()->routeIs('toppage')">
+                    {{ __('トップページ') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link class="font-bold text-gray-900" :href="route('create')" :active="request()->routeIs('create')">
+                    {{ __('作品を追加') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link class="font-bold text-gray-900" :href="route('wish_list.view')" :active="request()->routeIs('wish_list.view')">
+                    {{ __('読みたいリスト') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link class="font-bold text-gray-900" :href="route('showmypage')" :active="request()->routeIs('showmypage')">
+                    {{ __('マイページ') }}
+                </x-responsive-nav-link>
+                <x-nav-link class="font-bold text-gray-900" :href="route('howtouse')" :active="request()->routeIs('howtouse')">
+                    {{ __('このサイトの使い方') }}
+                </x-responsive-nav-link> 
+                <div class=" p-4">
+                @auth
+                    <!-- ログインしている場合のコンテンツ（ログアウトボタン） -->
+                    <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <x-responsive-nav-link class="font-bold text-gray-900" :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
+                        {{ __('ログアウト') }}
+                    </x-responsive-nav-link>
+                    </form>
+                @else
+                    <!-- ログインしていない場合のコンテンツ（ログインボタン） -->
+                    <a href="{{ route('login') }}" class="btn btn-secondary font-bold text-gray-900" role="button">
+                        {{ __('ログイン') }}
+                    </a>
+                @endauth
+                </div>
+            </div>
         </div>
     </div>
 </nav>
