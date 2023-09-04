@@ -25,14 +25,12 @@ class ToppageController extends Controller
         
         $query = Post::query();
 
-       // 作品名での検索
         if ($request->input('search_type') === 'title') {
             if (!empty($keyword)) {
                 $query->where('title', 'LIKE', "%{$keyword}%");
             }
         }
 
-        // 作者名での検索
         if ($request->input('search_type') === 'author') {
             if (!empty($author_keyword)) {
                 $query->whereHas('creators', function ($q) use ($author_keyword) {
@@ -41,13 +39,12 @@ class ToppageController extends Controller
             }
         }
 
-        // 年代での検索
         if ($request->input('search_type') === 'year') {
             if (!empty($start_year) && !empty($end_year)) {
                 $query->whereBetween('released_date', [$start_year, $end_year]);
             }
         }
-        // タグでの検索
+        
          if ($request->input('search_type') === 'tag' && !empty($selected_tags)) {
             $query->whereHas('tags', function ($q) use ($selected_tags) {
             $q->whereIn('id', $selected_tags);
@@ -58,9 +55,9 @@ class ToppageController extends Controller
         $post_order = $request->input('sort_order', 'newest', 'oldest');
         
         if ($post_order === 'oldest') {
-            $query->orderBy('released_date', 'asc'); // 古い順
+            $query->orderBy('released_date', 'asc'); 
         } else {
-            $query->orderBy('released_date', 'desc'); // デフォルトは新しい順
+            $query->orderBy('released_date', 'desc'); 
         }
         
         $posts = $query->paginate(8);
@@ -68,7 +65,6 @@ class ToppageController extends Controller
         if ($user && $user->favoritetag) {
             $get_favorite_tag = auth()->user()->favoritetag()->pluck('tag_id')->toArray();
             
-            // お気に入りタグに関連する作品を取得
             $related_posts = Post::whereHas('tags', function ($query) use ($get_favorite_tag) {
             
             $query->whereIn('tag_id', $get_favorite_tag);
