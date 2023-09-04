@@ -22,15 +22,12 @@ class WishlistController extends Controller
     
     public function operateWishList(Request $request, $id)
     {
-        // 済ボタンが押された際の処理
         $user = auth()->user();
         $post = Post::findOrFail($id);
 
         if ($post->wishList()->where('user_id', $user->id)->exists()) {
-            // いいねを解除
             $post->wishList()->detach($user->id);
         } else {
-            // いいねを付ける
             $post->wishList()->attach($user->id);
         }
         
