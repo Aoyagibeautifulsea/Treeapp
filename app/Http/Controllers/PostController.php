@@ -63,7 +63,6 @@ class PostController extends Controller
         $post->user_id = Auth::id();
         $post_input = $request['post'];
         
-          //  bool型でデータを格納
         $age_check = $request->has('post.age_limit') ? true : false;
         $post_input['age_limit'] = $age_check;
         $post_input['age_limit'] = (boolean)
@@ -71,10 +70,10 @@ class PostController extends Controller
          
         $post->fill($post_input)->save();
          
-        $creator_names = $request->input('name', []); // 著者名の配列を取得
+        $creator_names = $request->input('name', []); 
 
         foreach ($creator_names as $index => $creator_name) {
-            if (!empty($creator_name)) { // 空の著者名は保存しない
+            if (!empty($creator_name)) { 
                 $creator_instance = new Creator();
                 $creator_instance->name = $creator_name;
                 $creator_instance->post_id = $post->id;
@@ -103,7 +102,7 @@ class PostController extends Controller
         }
      
         $get_tag = $request->input('tags_array', []);
-        // タグを関連付ける
+        
         $post->tags()->sync($get_tag);
         
         return redirect('/posts/' . $post->id);
@@ -118,24 +117,23 @@ class PostController extends Controller
 
     public function update(PostRequest $request, Post $post, Creator $creator,Image $image, Link $link)
     {
-        // 既存の関連データを削除
+       
         $post->creators()->delete();
         $post->images()->delete();
         $post->links()->delete();
         
         $post_input = $request['post'];
 
-        // bool型でデータを格納
         $age_check = $request->has('post.age_limit') ? true : false;
         $post_input['age_limit'] = $age_check;
         $post_input['age_limit'] = (boolean) $post_input['age_limit'];
 
         $post->fill($post_input)->save();
 
-        $creator_names = $request->input('creator_name', []); // 著者名の配列を取得
+        $creator_names = $request->input('creator_name', []); 
 
         foreach ($creator_names as $index => $creator_name) {
-            if (!empty($creator_name)) { // 空の著者名は保存しない
+            if (!empty($creator_name)) { 
                 $creator_instance = new Creator();
                 $creator_instance->name = $creator_name;
                 $creator_instance->post_id = $post->id;
@@ -166,7 +164,6 @@ class PostController extends Controller
         }
 
         $get_tag = $request->input('tags_array', []);
-        // タグを関連付ける
         $post->tags()->sync($get_tag);
         
         return redirect('/posts/' . $post->id);
@@ -193,12 +190,9 @@ class PostController extends Controller
         $post = Post::findOrFail($id);
         $user = auth()->user();
 
-        // 既にいいねしているか確認
         if ($post->favoritedBy()->where('user_id', $user->id)->exists()) {
-            // いいねを解除
             $post->favoritedBy()->detach($user->id);
         } else {
-            // いいねを付ける
             $post->favoritedBy()->attach($user->id);
         }
 
@@ -216,14 +210,12 @@ class PostController extends Controller
         $post_id = $request->input('post_id');
         $query = Post::query();
 
-       // 作品名での検索
         if ($request->input('search_type') === 'title') {
             if (!empty($keyword)) {
                 $query->where('title', 'LIKE', "%{$keyword}%");
             }
         }
 
-        // 作者名での検索
         if ($request->input('search_type') === 'author') {
             if (!empty($author_keyword)) {
                 $query->whereHas('creators', function ($q) use ($author_keyword) {
@@ -232,13 +224,12 @@ class PostController extends Controller
             }
         }
 
-        // 年代での検索
         if ($request->input('search_type') === 'year') {
             if (!empty($start_year) && !empty($end_year)) {
                 $query->whereBetween('released_date', [$start_year, $end_year]);
             }
         }
-        // タグでの検索
+        
          if ($request->input('search_type') === 'tag' && !empty($selected_tags)) {
             $query->whereHas('tags', function ($q) use ($selected_tags) {
             $q->whereIn('id', $selected_tags);
@@ -248,9 +239,9 @@ class PostController extends Controller
         $post_order = $request->input('sort_order', 'newest', 'oldest');
         
         if ($post_order === 'oldest') {
-            $query->orderBy('released_date', 'asc'); // 古い順
+            $query->orderBy('released_date', 'asc'); 
         } else {
-            $query->orderBy('released_date', 'desc'); // デフォルトは新しい順
+            $query->orderBy('released_date', 'desc'); 
         }
         $posts = $query->paginate(8);
 
@@ -279,14 +270,12 @@ class PostController extends Controller
         $post_id = $request->input('post_id');
         $query = Post::query();
 
-       // 作品名での検索
         if ($request->input('search_type') === 'title') {
             if (!empty($keyword)) {
                 $query->where('title', 'LIKE', "%{$keyword}%");
             }
         }
 
-        // 作者名での検索
         if ($request->input('search_type') === 'author') {
             if (!empty($author_keyword)) {
                 $query->whereHas('creators', function ($q) use ($author_keyword) {
@@ -295,13 +284,12 @@ class PostController extends Controller
             }
         }
 
-        // 年代での検索
         if ($request->input('search_type') === 'year') {
             if (!empty($start_year) && !empty($end_year)) {
                 $query->whereBetween('released_date', [$start_year, $end_year]);
             }
         }
-        // タグでの検索
+       
         if ($request->input('search_type') === 'tag' && !empty($selected_tags)) {
             $query->whereHas('tags', function ($q) use ($selected_tags) {
             $q->whereIn('id', $selected_tags);
@@ -311,9 +299,9 @@ class PostController extends Controller
         $post_order = $request->input('sort_order', 'newest', 'oldest');
         
         if ($post_order === 'oldest') {
-            $query->orderBy('released_date', 'asc'); // 古い順
+            $query->orderBy('released_date', 'asc'); 
         } else {
-            $query->orderBy('released_date', 'desc'); // デフォルトは新しい順
+            $query->orderBy('released_date', 'desc'); 
         }
         $posts = $query->paginate(8);
         
