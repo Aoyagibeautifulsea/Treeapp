@@ -77,13 +77,11 @@ class MypageController extends Controller
     
     public function showMypage()
     {
-        // ログインしているユーザーのIDを取得
         $user_id = auth()->id();
         $query = Post::query();
         
-        // ユーザーの投稿を取得
         $user = User::with('posts')->find($user_id);
-        // ログインユーザーのいいねした投稿を取得
+       
         $liked_posts = $user->favoritePosts;
         
         $tags = Tag::all();
@@ -95,13 +93,11 @@ class MypageController extends Controller
     
     public function favoriteTagStore(Request $request)
     {
-        $user = Auth::user(); // ログイン中のユーザーを取得する
+        $user = Auth::user(); 
         $tags_array = $request->input('tags_array', []);
     
-        // 既存のお気に入りタグを削除
         $user->favoritetag()->detach();
     
-        // 新しいお気に入りタグを登録
         foreach ($tags_array as $tag_id) {
             $user->favoritetag()->attach($tag_id);
         }
