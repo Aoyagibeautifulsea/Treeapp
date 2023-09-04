@@ -116,47 +116,47 @@
             @auth
             <div class="related-posts">
                 <div class="text-lg font-bold text-gray-800">お気に入りタグに登録したタグを含む作品</div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        @foreach ($related_posts as $post)
-                            <div class="bg-white border border-gray-300 shadow-md rounded-md p-4">
-                                <div class='post'>
-                                    <h2 class='title text-lg'>
-                                        作品名：　<a href="/posts/{{ $post->id }}" class="text-gray-800 hover:underline">{{ $post->title }}</a>
-                                    </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    @foreach ($related_posts as $post)
+                        <div class="bg-white border border-gray-300 shadow-md rounded-md p-4">
+                            <div class='post'>
+                                <h2 class='title text-lg'>
+                                    作品名：　<a href="/posts/{{ $post->id }}" class="text-gray-800 hover:underline">{{ $post->title }}</a>
+                                </h2>
+                            </div>
+                            <div class='creator mt-2'>
+                                <h3 class='creator text-gray-600'>
+                                作者名：
+                                @foreach($post->creators as $creator)
+                                    <a href="/posts/{{ $creator->id }}" class="text-gray-800 hover:underline">{{ $creator->name }}</a>
+                                @endforeach
+                                </h3>
+                            </div>   
+                            <div class='buttons flex space-x-2 mt-4'>           
+                                <div class='wish_list'>
+                                    <!--読みたいリストへの追加ボタン-->
+                                    <form action="{{ route('Wish_list',  ['id' => $post->id]) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 focus:outline-none text-white py-2 px-4 rounded-full">読みたいリストに追加</button>
+                                    </form>
                                 </div>
-                                <div class='creator mt-2'>
-                                    <h3 class='creator text-gray-600'>
-                                    作者名：
-                                    @foreach($post->creators as $creator)
-                                        <a href="/posts/{{ $creator->id }}" class="text-gray-800 hover:underline">{{ $creator->name }}</a>
-                                    @endforeach
-                                    </h3>
-                                </div>   
-                                <div class='buttons flex space-x-2 mt-4'>           
-                                    <div class='wish_list'>
-                                        <!--読みたいリストへの追加ボタン-->
-                                        <form action="{{ route('Wish_list',  ['id' => $post->id]) }}" method="POST">
-                                        @csrf
-                                        <button type="submit" class="bg-blue-500 hover:bg-blue-600 focus:outline-none text-white py-2 px-4 rounded-full">読みたいリストに追加</button>
-                                        </form>
-                                    </div>
-                        
-                                    <div class='good'>
-                                        <!--いいねボタン-->
-                                        <form action="{{ route('posts.like', ['id' => $post->id]) }}" method="POST">
-                                        @csrf
-                                        <button type="submit" class="bg-red-500 hover:bg-red-600 focus:outline-none text-white py-2 px-4 rounded-full">
-                                        @if ($post->favoritedBy()->where('user_id', auth()->id())->exists())
-                                            いいねを解除
-                                        @else
-                                            いいね
-                                        @endif
-                                        </button>
-                                        </form>
-                                    </div>
+                    
+                                <div class='good'>
+                                    <!--いいねボタン-->
+                                    <form action="{{ route('posts.like', ['id' => $post->id]) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="bg-red-500 hover:bg-red-600 focus:outline-none text-white py-2 px-4 rounded-full">
+                                    @if ($post->favoritedBy()->where('user_id', auth()->id())->exists())
+                                        いいねを解除
+                                    @else
+                                        いいね
+                                    @endif
+                                    </button>
+                                    </form>
                                 </div>
-                        @endforeach
-                    </div>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>        
             @endauth
